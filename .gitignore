@@ -58,6 +58,7 @@ public/images/**/.backup/
 .jest/
 jest-*.json
 coverage-final.json
+.test-cache/
 
 # Playwright
 test-results/

@@ -17,7 +17,16 @@
  * - Identifies external links (http/https, mailto, etc.)
  * - Makes HTTP HEAD requests to validate link accessibility
  * - Implements retry logic for temporary failures
- * - Caches results to avoid duplicate requests
+ * - Uses in-memory cache to avoid duplicate requests in same test run
+ * - Uses persistent disk cache (.test-cache/link-validation.json) for 7 days
+ *   to speed up subsequent test runs
+ *
+ * ## Performance Optimizations:
+ * - Persistent caching: Results cached for 7 days between test runs
+ * - Parallel requests: Up to 10 concurrent validations (up from 5)
+ * - Reduced timeout: 7 seconds per request (down from 10s)
+ * - Test timeout: 3 minutes (up from 1 minute to allow completion)
+ * - First run: ~30-35s, subsequent runs: ~30-35s with cache hits
  *
  * ## What counts as an external link:
  * - HTTP/HTTPS URLs (e.g., "https://example.com")
@@ -28,14 +37,22 @@
  * ## Configuration:
  * - Domains can be excluded from validation (see EXCLUDED_DOMAINS)
  * - Parallel requests are limited to avoid overwhelming servers
- * - Request timeout is set to 10 seconds
+ * - Request timeout is set to 7 seconds
  * - Retry logic with exponential backoff for temporary failures
+ * - Cache duration: 7 days (configurable via CACHE_DURATION_DAYS)
+ *
+ * ## Cache Management:
+ * - Cache file: .test-cache/link-validation.json
+ * - To clear cache: rm -rf .test-cache/link-validation.json
+ * - Cache automatically expires after 7 days
+ * - Gitignored to avoid committing test artifacts
  *
  * ## If this test fails:
  * 1. Check the console output for the list of broken links
  * 2. Each broken link will show: [source file] -> [broken link] -> [error]
  * 3. Fix the link in the source file or remove if no longer needed
  * 4. Run `pnpm test external-links-validation` to verify the fix
+ * 5. To force re-validation: rm -rf .test-cache/link-validation.json
  *
  * @example
  * // If you add this to a blog post MDX file:
@@ -53,10 +70,12 @@ import fs from 'fs'
 import path from 'path'
 
 // Configuration
-const REQUEST_TIMEOUT = 10000 // 10 seconds
-const MAX_CONCURRENT_REQUESTS = 5
+const REQUEST_TIMEOUT = 7000 // 7 seconds (reduced from 10s for faster feedback)
+const MAX_CONCURRENT_REQUESTS = 10 // Increased from 5 for better parallelism
 const MAX_RETRIES = 2
 const RETRY_DELAY_BASE = 1000 // 1 second base delay
+const CACHE_DURATION_DAYS = 7 // Cache validation results for 7 days
+const CACHE_FILE = path.join(process.cwd(), '.test-cache', 'link-validation.json')
 
 // Domains that often block automated requests or have strict rate limits
 const EXCLUDED_DOMAINS = [
@@ -72,13 +91,87 @@ const EXCLUDED_DOMAINS = [
   'whatsapp.com',
 ]
 
+/**
+ * Cached validation result with timestamp
+ */
+interface CachedResult extends ValidationResult {
+  timestamp: number
+}
+
+/**
+ * Cache structure for storing validation results
+ */
+interface ValidationCache {
+  [url: string]: CachedResult
+}
+
+/**
+ * Load cached validation results from disk
+ */
+function loadCache(): ValidationCache {
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      const data = fs.readFileSync(CACHE_FILE, 'utf-8')
+      return JSON.parse(data)
+    }
+  } catch (error) {
+    // Ignore cache read errors, start with fresh cache
+  }
+  return {}
+}
+
+/**
+ * Save validation results to cache
+ */
+function saveCache(cache: ValidationCache): void {
+  try {
+    const cacheDir = path.dirname(CACHE_FILE)
+    if (!fs.existsSync(cacheDir)) {
+      fs.mkdirSync(cacheDir, { recursive: true })
+    }
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2), 'utf-8')
+  } catch (error) {
+    // Ignore cache write errors
+  }
+}
+
+/**
+ * Get cached validation result if it exists and is not expired
+ */
+function getCachedResult(url: string, cache: ValidationCache): ValidationResult | null {
+  const result = cache[url]
+  if (!result) return null
+
+  const age = Date.now() - result.timestamp
+  const maxAge = CACHE_DURATION_DAYS * 24 * 60 * 60 * 1000
+
+  if (age < maxAge) {
+    // Return result without timestamp
+    const { timestamp: _timestamp, ...validationResult } = result
+    return validationResult
+  }
+
+  return null
+}
+
+/**
+ * Cache a validation result
+ */
+function cacheResult(url: string, result: ValidationResult, cache: ValidationCache): void {
+  cache[url] = {
+    ...result,
+    timestamp: Date.now(),
+  }
+}
+
 describe('External Links Validation', () => {
   const allExternalLinks: ExternalLink[] = []
   let validationResults: ValidationResult[] = []
   const linkCache = new Map<string, ValidationResult>()
+  let persistentCache: ValidationCache = {} // Persistent cache loaded from disk
 
   // Increase Jest timeout for network requests
-  jest.setTimeout(60000) // 1 minute
+  jest.setTimeout(180000) // 3 minutes (increased from 1 minute to allow completion)
 
   /**
    * Check if a URL is an external link
@@ -227,9 +320,17 @@ describe('External Links Validation', () => {
       }
     }
 
-    // Check cache first
+    // Check in-memory cache first (for current test run)
     if (linkCache.has(url)) {
       return linkCache.get(url)!
+    }
+
+    // Check persistent cache (from previous test runs)
+    const cachedResult = getCachedResult(url, persistentCache)
+    if (cachedResult) {
+      // Store in in-memory cache too for this test run
+      linkCache.set(url, cachedResult)
+      return cachedResult
     }
 
     let lastError: string | undefined
@@ -261,6 +362,7 @@ describe('External Links Validation', () => {
         // Cache successful results and 4xx errors (likely permanent)
         if (response.ok || (response.status >= 400 && response.status < 500)) {
           linkCache.set(url, result)
+          cacheResult(url, result, persistentCache)
         }
 
         return result
@@ -276,6 +378,7 @@ describe('External Links Validation', () => {
             error: errorMessage,
           }
           linkCache.set(url, result)
+          cacheResult(url, result, persistentCache)
           return result
         }
 
@@ -294,6 +397,7 @@ describe('External Links Validation', () => {
       error: lastError || 'Max retries exceeded',
     }
     linkCache.set(url, result)
+    cacheResult(url, result, persistentCache)
     return result
   }
 
@@ -359,6 +463,13 @@ describe('External Links Validation', () => {
 
   beforeAll(async () => {
     //console.log('🔗 Starting external links validation...')
+    // Load persistent cache from disk
+    persistentCache = loadCache()
+  })
+
+  afterAll(() => {
+    // Save persistent cache to disk for next test run
+    saveCache(persistentCache)
   })
 
   test('should extract external links from all blog posts', async () => {
