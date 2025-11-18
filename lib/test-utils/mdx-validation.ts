@@ -21,7 +21,7 @@ import { processMDX, validateFrontmatter } from '@/lib/content/mdx-processor'
 export interface MDXValidationConfig {
   /** Directory name where content files are stored */
   directory: string
-  /** Expected canonical URL prefix (e.g., 'https://news.plantdoctor.app/blog') */
+  /** Expected canonical URL prefix (e.g., 'https://blog.plantdoctor.app/blog') */
   canonicalPrefix: string
   /** Optional: Minimum number of MDX files expected */
   minFiles?: number
@@ -133,7 +133,7 @@ export function validateMDXFiles(config: MDXValidationConfig): void {
  * describe('Blog MDX structure', () => {
  *   createMDXValidationTest({
  *     directory: 'posts',
- *     canonicalPrefix: 'https://news.plantdoctor.app/blog',
+ *     canonicalPrefix: 'https://blog.plantdoctor.app/blog',
  *     minFiles: 1,
  *   })
  * })

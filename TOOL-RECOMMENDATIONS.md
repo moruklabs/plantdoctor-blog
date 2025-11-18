@@ -313,7 +313,7 @@ runDistributedTests()
 ```bash
 # On each machine via Tailscale SSH
 git clone [your-repo]
-cd news.plantdoctor.app
+cd blog.plantdoctor.app
 pnpm install
 npx playwright install chromium
 ```
@@ -323,7 +323,7 @@ npx playwright install chromium
 ```bash
 # From main machine
 for machine in machine2 machine3 machine4; do
-  ssh $machine.tailscale "cd /path/to/news.plantdoctor.app && npx playwright --version"
+  ssh $machine.tailscale "cd /path/to/blog.plantdoctor.app && npx playwright --version"
 done
 ```
 
@@ -333,9 +333,9 @@ done
 # Create run-distributed.sh
 #!/bin/bash
 pnpm test:e2e --shard=1/4 &
-ssh machine2.tailscale "cd /path/to/news.plantdoctor.app && pnpm test:e2e --shard=2/4" &
-ssh machine3.tailscale "cd /path/to/news.plantdoctor.app && pnpm test:e2e --shard=3/4" &
-ssh machine4.tailscale "cd /path/to/news.plantdoctor.app && pnpm test:e2e --shard=4/4" &
+ssh machine2.tailscale "cd /path/to/blog.plantdoctor.app && pnpm test:e2e --shard=2/4" &
+ssh machine3.tailscale "cd /path/to/blog.plantdoctor.app && pnpm test:e2e --shard=3/4" &
+ssh machine4.tailscale "cd /path/to/blog.plantdoctor.app && pnpm test:e2e --shard=4/4" &
 wait
 ```
 

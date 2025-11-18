@@ -118,7 +118,7 @@ export function processMDX(source: string, slug: string): ProcessedPost {
 
   // Add security attributes to external links in footnotes and citations
   html = html.replace(
-    /<a href="(https?:\/\/(?!news.plantdoctor.app\.ai)[^"]+)"([^>]*)>/g,
+    /<a href="(https?:\/\/(?!blog.plantdoctor.app\.ai)[^"]+)"([^>]*)>/g,
     '<a href="$1" rel="nofollow noopener noreferrer" target="_blank"$2>',
   )
 

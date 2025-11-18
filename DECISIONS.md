@@ -1190,7 +1190,7 @@ This violated DRY principles and made the codebase:
 
 **Phase 3: Testing & Validation**
 
-- ✅ Updated tests to match new domain (news.plantdoctor.app)
+- ✅ Updated tests to match new domain (blog.plantdoctor.app)
 - ✅ All TypeScript type checks passing
 - ✅ Production build successful
 - ✅ All tests passing

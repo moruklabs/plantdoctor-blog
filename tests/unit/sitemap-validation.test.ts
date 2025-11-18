@@ -7,7 +7,7 @@
  * ## What it tests:
  * 1. Generates the sitemap using the app/sitemap.ts function
  * 2. Extracts all URLs from the sitemap
- * 3. Converts full URLs to internal paths (e.g., https://news.plantdoctor.app/tips -> /tips)
+ * 3. Converts full URLs to internal paths (e.g., https://blog.plantdoctor.app/tips -> /tips)
  * 4. Validates that each path points to a valid route in the application
  * 5. Reports any broken URLs that would result in 404 errors
  *
@@ -34,7 +34,7 @@
  * 4. Run `pnpm test sitemap-validation` to verify the fix
  *
  * @example
- * // If sitemap includes: https://news.plantdoctor.app/tips/non-existent-post
+ * // If sitemap includes: https://blog.plantdoctor.app/tips/non-existent-post
  * // Test will fail with: ✗ /tips/non-existent-post (404 - Route not found)
  */
 import sitemap from '@/app/sitemap'
@@ -91,7 +91,7 @@ describe('Sitemap URL Validation', () => {
 
   /**
    * Convert a full URL to an internal path
-   * Example: https://news.plantdoctor.app/blog/post -> /blog/post
+   * Example: https://blog.plantdoctor.app/blog/post -> /blog/post
    */
   function urlToPath(url: string): string {
     try {
@@ -397,7 +397,7 @@ describe('Sitemap URL Validation', () => {
 
       for (const post of posts) {
         const sitemapEntry = sitemapData.find(
-          (entry) => entry.url === `https://news.plantdoctor.app/tips/${post.metadata.slug}`,
+          (entry) => entry.url === `https://blog.plantdoctor.app/tips/${post.metadata.slug}`,
         )
 
         if (sitemapEntry && !sitemapEntry.lastModified) {
@@ -422,7 +422,7 @@ describe('Sitemap URL Validation', () => {
 
       for (const guide of guides) {
         const sitemapEntry = sitemapData.find(
-          (entry) => entry.url === `https://news.plantdoctor.app/guides/${guide.metadata.slug}`,
+          (entry) => entry.url === `https://blog.plantdoctor.app/guides/${guide.metadata.slug}`,
         )
 
         if (sitemapEntry && !sitemapEntry.lastModified) {
@@ -455,7 +455,7 @@ describe('Sitemap URL Validation', () => {
         try {
           const fileStats = await stat(filePath)
           const sitemapEntry = sitemapData.find(
-            (entry) => entry.url === `https://news.plantdoctor.app/tips/${post.metadata.slug}`,
+            (entry) => entry.url === `https://blog.plantdoctor.app/tips/${post.metadata.slug}`,
           )
 
           if (sitemapEntry && sitemapEntry.lastModified) {

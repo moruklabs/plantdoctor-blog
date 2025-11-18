@@ -237,7 +237,7 @@
   - Created ai-tools-content-creation-mastery.mdx with 10 internal links
   - Created habit-building-and-behavior-change.mdx with 10 internal links
   - Created business-templates-monetization.mdx with 10 internal links
-  - All guides use correct canonical URL base (https://news.plantdoctor.app)
+  - All guides use correct canonical URL base (https://blog.plantdoctor.app)
   - Each guide includes implementation plans and key takeaways
   - Commit: 7bdfacb
 

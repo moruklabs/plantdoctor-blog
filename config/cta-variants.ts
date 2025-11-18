@@ -12,7 +12,7 @@ export const CTA_VARIANTS: Record<string, CTAVariant> = {
     description:
       'Get instant AI-powered plant disease diagnosis, care schedules, and expert treatment recommendations. Identify plants, recognize breeds, and save your green friends.',
     ctaText: 'Download Plant Doctor App',
-    href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
+    href: 'https://moruk.link/plantdoctor?utm_source=blog.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
   },
   // Pests & Diseases
   pests: {
@@ -20,7 +20,7 @@ export const CTA_VARIANTS: Record<string, CTAVariant> = {
     description:
       'Instantly identify pests and diseases with a single photo. Get expert treatment plans to save your plants from fungus gnats, mites, and more.',
     ctaText: 'Diagnose Your Plant Now',
-    href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta-pest',
+    href: 'https://moruk.link/plantdoctor?utm_source=blog.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta-pest',
   },
   // Pet Safety
   pets: {
@@ -28,7 +28,7 @@ export const CTA_VARIANTS: Record<string, CTAVariant> = {
     description:
       'Check toxicity instantly. Our AI identifies toxic plants and suggests pet-safe alternatives to keep your cats and dogs safe.',
     ctaText: 'Check Plant Toxicity',
-    href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta-pet',
+    href: 'https://moruk.link/plantdoctor?utm_source=blog.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta-pet',
   },
   // General Care / Identification
   care: {
@@ -36,7 +36,7 @@ export const CTA_VARIANTS: Record<string, CTAVariant> = {
     description:
       'Get personalized watering schedules, light recommendations, and care reminders tailored to your specific plants.',
     ctaText: 'Get Your Care Schedule',
-    href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta-care',
+    href: 'https://moruk.link/plantdoctor?utm_source=blog.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta-care',
   },
 }
 

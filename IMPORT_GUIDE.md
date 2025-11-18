@@ -9,14 +9,14 @@
 
 ## 🎯 Overview
 
-This guide walks through importing 2,008 blog posts from `/blog-posts/moruk/` into the live blog at `news.plantdoctor.app`. All posts will be automatically remapped to the new 8-category taxonomy.
+This guide walks through importing 2,008 blog posts from `/blog-posts/moruk/` into the live blog at `blog.plantdoctor.app`. All posts will be automatically remapped to the new 8-category taxonomy.
 
 **Key automation:**
 
 - ✅ Citation cleanup (remove example.com jibberish)
 - ✅ Category remapping (330 apps → 8 mega-categories)
 - ✅ Image organization (1,966 WebP files)
-- ✅ Canonical URL updates (moruk.ai → news.plantdoctor.app)
+- ✅ Canonical URL updates (moruk.ai → blog.plantdoctor.app)
 - ✅ Frontmatter standardization
 
 ---
@@ -26,13 +26,13 @@ This guide walks through importing 2,008 blog posts from `/blog-posts/moruk/` in
 ### Posts
 
 - **Source:** `/Users/fatih/workspace/blog-posts/moruk/*/posts/*.mdx`
-- **Destination:** `/Users/fatih/workspace/news.plantdoctor.app/content/posts/`
+- **Destination:** `/Users/fatih/workspace/blog.plantdoctor.app/content/posts/`
 - **Total:** 2,008 MDX files
 
 ### Images
 
 - **Source:** `/Users/fatih/workspace/blog-posts/moruk/*/images/webp/`
-- **Destination:** `/Users/fatih/workspace/news.plantdoctor.app/public/images/webp/blog-posts/`
+- **Destination:** `/Users/fatih/workspace/blog.plantdoctor.app/public/images/webp/blog-posts/`
 - **Total:** 1,966 WebP files
 - **Organization:** `/[app-name]/[image-name].webp`
 
@@ -136,7 +136,7 @@ export function getMegaCategory(oldCategory) // Lookup function
    - Copies images to `public/images/webp/blog-posts/[app]/`
    - Updates image paths in MDX (e.g., `image.webp` → `/images/webp/blog-posts/dog-doctor/image.webp`)
    - Remaps `primaryCategory` using taxonomy mapping
-   - Updates canonical URLs (moruk.ai → news.plantdoctor.app)
+   - Updates canonical URLs (moruk.ai → blog.plantdoctor.app)
    - Adds `appName` metadata
    - Writes to `content/posts/`
 
@@ -193,7 +193,7 @@ pnpm ts-node scripts/bulk-import-posts.ts --verbose
 ```bash
 # Check directories exist
 ls -la /Users/fatih/workspace/blog-posts/moruk/ | head -20
-ls -la /Users/fatih/workspace/news.plantdoctor.app/content/
+ls -la /Users/fatih/workspace/blog.plantdoctor.app/content/
 
 # Verify MDX files
 find /Users/fatih/workspace/blog-posts/moruk -name "*.mdx" | wc -l
@@ -239,11 +239,11 @@ pnpm ts-node scripts/bulk-import-posts.ts --limit=50 --verbose
 
 ```bash
 # Check posts were created
-ls /Users/fatih/workspace/news.plantdoctor.app/content/posts/ | wc -l
+ls /Users/fatih/workspace/blog.plantdoctor.app/content/posts/ | wc -l
 # Should show: 51 (1 existing + 50 new)
 
 # Check images were organized
-ls -la /Users/fatih/workspace/news.plantdoctor.app/public/images/webp/blog-posts/ | head
+ls -la /Users/fatih/workspace/blog.plantdoctor.app/public/images/webp/blog-posts/ | head
 
 # Test build
 pnpm build
@@ -276,18 +276,18 @@ pnpm ts-node scripts/bulk-import-posts.ts --verbose
 
 ```bash
 # Verify all posts imported
-ls /Users/fatih/workspace/news.plantdoctor.app/content/posts/ | wc -l
+ls /Users/fatih/workspace/blog.plantdoctor.app/content/posts/ | wc -l
 # Should output: 2009 (1 existing + 2,008 new)
 
 # Check for duplicates
-ls /Users/fatih/workspace/news.plantdoctor.app/content/posts/ | sort | uniq -d
+ls /Users/fatih/workspace/blog.plantdoctor.app/content/posts/ | sort | uniq -d
 
 # Verify images
-find /Users/fatih/workspace/news.plantdoctor.app/public/images/webp/blog-posts -name "*.webp" | wc -l
+find /Users/fatih/workspace/blog.plantdoctor.app/public/images/webp/blog-posts -name "*.webp" | wc -l
 # Should be: 1,966
 
 # Check category mapping
-grep -r "primaryCategory:" /Users/fatih/workspace/news.plantdoctor.app/content/posts/ | head -20
+grep -r "primaryCategory:" /Users/fatih/workspace/blog.plantdoctor.app/content/posts/ | head -20
 
 # Validate build
 pnpm build
@@ -331,12 +331,12 @@ blog-posts/moruk/
 
         ↓↓↓ bulk-import-posts.ts ↓↓↓
 
-news.plantdoctor.app/
+blog.plantdoctor.app/
 ├─ content/posts/
 │  └─ getting-started.mdx  (updated)
 │     ├─ primaryCategory: "lifestyle" (remapped from "dog-doctor")
 │     ├─ appName: "dog-doctor" (added)
-│     ├─ canonical: https://news.plantdoctor.app/... (updated)
+│     ├─ canonical: https://blog.plantdoctor.app/... (updated)
 │     └─ ![alt](/images/webp/blog-posts/dog-doctor/dog-photo.webp) (updated)
 │
 └─ public/images/webp/blog-posts/
@@ -363,7 +363,7 @@ news.plantdoctor.app/
 
 ### Canonical URLs
 
-- All updated from `moruk.ai` to `news.plantdoctor.app`
+- All updated from `moruk.ai` to `blog.plantdoctor.app`
 - Ensures proper SEO handling
 - Old URLs automatically redirect
 
@@ -412,7 +412,7 @@ pnpm ts-node scripts/bulk-import-posts.ts --skip-existing
 **Solution:** Check image paths in MDX
 
 ```bash
-grep -n "\.webp" /Users/fatih/workspace/news.plantdoctor.app/content/posts/example.mdx
+grep -n "\.webp" /Users/fatih/workspace/blog.plantdoctor.app/content/posts/example.mdx
 ```
 
 ### Issue: Build fails after import
@@ -430,8 +430,8 @@ pnpm build
 **Solution:** Check `draft: true` and future dates
 
 ```bash
-grep "draft: true" /Users/fatih/workspace/news.plantdoctor.app/content/posts/*.mdx | wc -l
-grep "date:" /Users/fatih/workspace/news.plantdoctor.app/content/posts/*.mdx | grep "2025\|2026\|2027" | wc -l
+grep "draft: true" /Users/fatih/workspace/blog.plantdoctor.app/content/posts/*.mdx | wc -l
+grep "date:" /Users/fatih/workspace/blog.plantdoctor.app/content/posts/*.mdx | grep "2025\|2026\|2027" | wc -l
 ```
 
 ---

@@ -29,7 +29,7 @@ import { createMDXValidationTest } from '@/lib/test-utils/mdx-validation'
 describe('Blog MDX structure', () => {
   createMDXValidationTest({
     directory: 'posts',
-    canonicalPrefix: 'https://news.plantdoctor.app/blog',
+    canonicalPrefix: 'https://blog.plantdoctor.app/blog',
     minFiles: 1,
   })
 })
@@ -38,7 +38,7 @@ describe('Blog MDX structure', () => {
 **Configuration Options:**
 
 - `directory` - Directory name where content files are stored (e.g., 'posts', 'guides')
-- `canonicalPrefix` - Expected canonical URL prefix (e.g., 'https://news.plantdoctor.app/blog')
+- `canonicalPrefix` - Expected canonical URL prefix (e.g., 'https://blog.plantdoctor.app/blog')
 - `minFiles` - Optional minimum number of MDX files expected
 
 **Validations Performed:**
@@ -182,7 +182,7 @@ import { createMDXValidationTest } from '@/lib/test-utils/mdx-validation'
 describe('Blog MDX structure', () => {
   createMDXValidationTest({
     directory: 'posts',
-    canonicalPrefix: 'https://news.plantdoctor.app/blog',
+    canonicalPrefix: 'https://blog.plantdoctor.app/blog',
     minFiles: 1,
   })
 })

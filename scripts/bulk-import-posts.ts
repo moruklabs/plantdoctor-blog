@@ -8,7 +8,7 @@
  * 1. Copy WebP images to public/images/webp/
  * 2. Update image paths in MDX files
  * 3. Remap categories using taxonomy mapping
- * 4. Update canonical URLs (moruk.ai → news.plantdoctor.app)
+ * 4. Update canonical URLs (moruk.ai → blog.plantdoctor.app)
  * 5. Copy MDX files to content/posts/
  * 6. Ensure no filename conflicts
  *
@@ -41,9 +41,9 @@ interface ImportResult {
 }
 
 const BLOG_POSTS_DIR = '/Users/fatih/workspace/blog-posts/moruk'
-const CONTENT_POSTS_DIR = '/Users/fatih/workspace/news.plantdoctor.app/content/posts'
+const CONTENT_POSTS_DIR = '/Users/fatih/workspace/blog.plantdoctor.app/content/posts'
 const PUBLIC_IMAGES_DIR =
-  '/Users/fatih/workspace/news.plantdoctor.app/public/images/webp/blog-posts'
+  '/Users/fatih/workspace/blog.plantdoctor.app/public/images/webp/blog-posts'
 
 // Ensure directories exist
 function ensureDirectories() {
@@ -85,10 +85,10 @@ function updateFrontmatter(content: string, appName: string): string {
     )
   }
 
-  // 2. Update canonical URLs (moruk.ai → news.plantdoctor.app)
+  // 2. Update canonical URLs (moruk.ai → blog.plantdoctor.app)
   updated = updated.replace(
     /canonical:\s*https?:\/\/moruk\.ai\//g,
-    'canonical: https://news.plantdoctor.app/',
+    'canonical: https://blog.plantdoctor.app/',
   )
 
   // 3. Ensure app name is in metadata (for filtering by app)

@@ -61,7 +61,7 @@ pnpm task:cleanup          # Remove stale locks (>2 hours old)
 ### Key Files & Directories
 
 ```
-/Users/fatih/workspace/news.plantdoctor.app/
+/Users/fatih/workspace/blog.plantdoctor.app/
 ├── REFACTORING.md              # Main refactoring plan (12 phases)
 ├── BRANCHING-STRATEGY.md       # Git workflow guide
 ├── RESEARCH-SUMMARY.md         # Research findings & recommendations
@@ -422,7 +422,7 @@ git commit -m "wip: [description of work in progress]"
 
 ### 1. TODO.md - Task Tracking
 
-**Location:** `/Users/fatih/workspace/news.plantdoctor.app/TODO.md`
+**Location:** `/Users/fatih/workspace/blog.plantdoctor.app/TODO.md`
 
 **Template:**
 
@@ -512,7 +512,7 @@ git commit -m "wip: [description of work in progress]"
 
 ### 2. DECISIONS.md - Architecture Decision Records
 
-**Location:** `/Users/fatih/workspace/news.plantdoctor.app/DECISIONS.md`
+**Location:** `/Users/fatih/workspace/blog.plantdoctor.app/DECISIONS.md`
 
 **Template:**
 
@@ -608,7 +608,7 @@ What needs to happen next?
 
 ### 3. CHANGELOG.md - Change Log
 
-**Location:** `/Users/fatih/workspace/news.plantdoctor.app/CHANGELOG.md`
+**Location:** `/Users/fatih/workspace/blog.plantdoctor.app/CHANGELOG.md`
 
 **Template:**
 
@@ -688,7 +688,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 4. STATUS.md - Current State Snapshot
 
-**Location:** `/Users/fatih/workspace/news.plantdoctor.app/STATUS.md`
+**Location:** `/Users/fatih/workspace/blog.plantdoctor.app/STATUS.md`
 
 **Template:**
 
@@ -1516,4 +1516,4 @@ git commit -m "feat: Enable TypeScript strict mode"
 **Next Milestone**: Start Phase 5 - Theme Architecture
 
 - from now on we switch to TDD, including accessibility, lighthouse, unit, integration and e2e on mobile, tablet and desktop, and on light mode and dark mode.
-- the base url is news.plantdoctor.app
+- the base url is blog.plantdoctor.app

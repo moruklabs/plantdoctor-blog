@@ -29,7 +29,7 @@ Phase 5 successfully completed! All theme system work finished:
 - ThemeProvider fully integrated in layout
 - CSS custom properties with zero runtime overhead
 
-**Bonus Work Completed:** Subdomain rename (tips.moruk.ai → news.plantdoctor.app) + Google News integration
+**Bonus Work Completed:** Subdomain rename (tips.moruk.ai → blog.plantdoctor.app) + Google News integration
 
 **Next:** Phase 6 - Implement Themes OR Phase 7 - Internationalization
 
@@ -118,7 +118,7 @@ Phase 12: ⏳ Pending - Final Cleanup
    - ai-tools-content-creation-mastery.mdx (440 internal links to posts)
    - habit-building-and-behavior-change.mdx (52 internal links to posts)
    - business-templates-monetization.mdx (70 internal links to posts)
-   - Each guide uses correct canonical URL base (https://news.plantdoctor.app)
+   - Each guide uses correct canonical URL base (https://blog.plantdoctor.app)
    - Each includes: subsections, 10-15 internal links, implementation plans, key takeaways
    - Commit: 7bdfacb - "feat: Create 6 strategic SEO hub guides with internal links"
 
@@ -146,7 +146,7 @@ Phase 12: ⏳ Pending - Final Cleanup
 - ✅ Production build passing
 - ✅ TypeScript clean
 
-**Subdomain Rename (tips.moruk.ai → news.plantdoctor.app):**
+**Subdomain Rename (tips.moruk.ai → blog.plantdoctor.app):**
 
 - ✅ Updated BASE.BLOG_DOMAIN and BASE.BLOG_URL in config/constants.ts
 - ✅ Updated navigation: "Tips" → "News" in nav-bar.tsx
@@ -228,7 +228,7 @@ User clarified vision: "home page should be only made of posts like a newspaper 
 **Option A: Deploy to Production**
 
 - Push to origin/main (7 commits ahead)
-- Deploy to news.plantdoctor.app
+- Deploy to blog.plantdoctor.app
 - Verify production build and Lighthouse scores
 
 **Option B: Continue Refactoring - Phase 6 (Implement Themes)**

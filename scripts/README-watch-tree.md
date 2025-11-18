@@ -103,7 +103,7 @@ The generated `PROJECT_STRUCTURE.md` includes:
 ### 2. Directory Tree
 
 ```
-news.plantdoctor.app/
+blog.plantdoctor.app/
 ├── app/ (45 files, 12 dirs)
 │   ├── components/
 │   ├── page.tsx
@@ -245,4 +245,4 @@ All events are debounced with a single timer. The tree regenerates only after th
 
 ## License
 
-Part of the news.plantdoctor.app project.
+Part of the blog.plantdoctor.app project.

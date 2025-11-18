@@ -116,7 +116,7 @@ description: 'A post from the past'
 tags: ['test']
 date: '2025-09-10'
 draft: false
-canonical: 'https://news.plantdoctor.app/blog/past-post'
+canonical: 'https://blog.plantdoctor.app/blog/past-post'
 readingTime: 5
 ---
 
@@ -132,7 +132,7 @@ description: 'A post from today'
 tags: ['test']
 date: '2025-09-15'
 draft: false
-canonical: 'https://news.plantdoctor.app/blog/today-post'
+canonical: 'https://blog.plantdoctor.app/blog/today-post'
 readingTime: 5
 ---
 
@@ -148,7 +148,7 @@ description: 'A post from the future'
 tags: ['test']
 date: '2025-09-20'
 draft: false
-canonical: 'https://news.plantdoctor.app/blog/future-post'
+canonical: 'https://blog.plantdoctor.app/blog/future-post'
 readingTime: 5
 ---
 
@@ -164,7 +164,7 @@ description: 'A draft post'
 tags: ['test']
 date: '2025-09-10'
 draft: true
-canonical: 'https://news.plantdoctor.app/blog/draft-post'
+canonical: 'https://blog.plantdoctor.app/blog/draft-post'
 readingTime: 5
 ---
 
@@ -234,7 +234,7 @@ description: 'A future post'
 tags: ['test']
 date: '2099-12-31'
 draft: false
-canonical: 'https://news.plantdoctor.app/blog/future-post'
+canonical: 'https://blog.plantdoctor.app/blog/future-post'
 readingTime: 5
 ---
 

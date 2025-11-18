@@ -9,23 +9,23 @@ import { metadata as notFoundMetadata } from '@/app/not-found'
 
 describe('Canonical URLs', () => {
   it('should have canonical URL on homepage', () => {
-    expect(homeMetadata.alternates?.canonical).toBe('https://news.plantdoctor.app')
+    expect(homeMetadata.alternates?.canonical).toBe('https://blog.plantdoctor.app')
   })
 
   it('should have canonical URL on tips page', () => {
-    expect(tipsMetadata.alternates?.canonical).toBe('https://news.plantdoctor.app/tips')
+    expect(tipsMetadata.alternates?.canonical).toBe('https://blog.plantdoctor.app/tips')
   })
 
   it('should have canonical URL on about page', () => {
-    expect(aboutMetadata.alternates?.canonical).toBe('https://news.plantdoctor.app/about')
+    expect(aboutMetadata.alternates?.canonical).toBe('https://blog.plantdoctor.app/about')
   })
 
   it('should have canonical URL on contact page', () => {
-    expect(contactMetadata.alternates?.canonical).toBe('https://news.plantdoctor.app/contact')
+    expect(contactMetadata.alternates?.canonical).toBe('https://blog.plantdoctor.app/contact')
   })
 
   it('should have canonical URL on 404 page', () => {
-    expect(notFoundMetadata.alternates?.canonical).toBe('https://news.plantdoctor.app')
+    expect(notFoundMetadata.alternates?.canonical).toBe('https://blog.plantdoctor.app')
   })
 })
 
@@ -43,7 +43,7 @@ describe('Metadata Structure', () => {
       expect(metadata.title).toBeDefined()
       expect(metadata.description).toBeDefined()
       expect(metadata.alternates?.canonical).toBeDefined()
-      expect(metadata.alternates?.canonical).toMatch(/^https:\/\/news.plantdoctor.app/)
+      expect(metadata.alternates?.canonical).toMatch(/^https:\/\/blog.plantdoctor.app/)
     })
   })
 })

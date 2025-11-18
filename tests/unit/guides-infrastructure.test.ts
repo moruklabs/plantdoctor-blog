@@ -66,7 +66,7 @@ describe('Guides Infrastructure', () => {
       if (slugs.length === 0) return
 
       const guide = await getGuideBySlug(slugs[0].slug)
-      expect(guide.metadata.canonical).toMatch(/^https:\/\/news.plantdoctor.app\/guides\//)
+      expect(guide.metadata.canonical).toMatch(/^https:\/\/blog.plantdoctor.app\/guides\//)
     })
 
     it('should have structured data with Article type', async () => {

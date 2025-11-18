@@ -22,8 +22,8 @@ const BASE = {
 
   // URLs and domains
   LANDING_PAGE_URL: 'https://plantdoctor.app',
-  BLOG_DOMAIN: 'news.plantdoctor.app',
-  BLOG_URL: `https://news.plantdoctor.app`,
+  BLOG_DOMAIN: 'blog.plantdoctor.app',
+  BLOG_URL: `https://blog.plantdoctor.app`,
   COMPANY_URL: 'https://moruk.ai',
   MORUK_URL: 'https://moruk.ai',
   APP_URL: 'https://plantdoctor.app',

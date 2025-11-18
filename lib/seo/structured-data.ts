@@ -53,7 +53,7 @@ export function createOrganizationSchema(
  * @example
  * ```tsx
  * const entryPoint = createEntryPoint({
- *   urlTemplate: 'https://news.plantdoctor.app/app',
+ *   urlTemplate: 'https://blog.plantdoctor.app/app',
  *   actionPlatform: ['http://schema.org/MobileWebPlatform']
  * })
  * ```
@@ -74,7 +74,7 @@ export function createEntryPoint(data: Omit<EntryPoint, '@type'>): EntryPoint {
  * const action = createDownloadAction({
  *   name: 'Download {blogConfig.site.name} App',
  *   target: createEntryPoint({
- *     urlTemplate: 'https://news.plantdoctor.app',
+ *     urlTemplate: 'https://blog.plantdoctor.app',
  *     actionPlatform: ['http://schema.org/DesktopWebPlatform']
  *   })
  * })
@@ -98,7 +98,7 @@ export function createDownloadAction(
  * const action = createJoinAction({
  *   name: 'Join Discord Community',
  *   target: createEntryPoint({
- *     urlTemplate: 'https://discord.gg/news.plantdoctor.app'
+ *     urlTemplate: 'https://discord.gg/blog.plantdoctor.app'
  *   })
  * })
  * ```
@@ -119,7 +119,7 @@ export function createJoinAction(data: Omit<JoinActionSchema, '@type'>): JoinAct
  * const action = createViewAction({
  *   name: 'Start Reading Our Advice',
  *   target: createEntryPoint({
- *     urlTemplate: 'https://news.plantdoctor.app/tips'
+ *     urlTemplate: 'https://blog.plantdoctor.app/tips'
  *   })
  * })
  * ```
@@ -163,7 +163,7 @@ export function createCreativeWork(data: Omit<CreativeWorkSchema, '@type'>): Cre
  *   }),
  *   potentialAction: createViewAction({
  *     name: 'Read Tips',
- *     target: createEntryPoint({ urlTemplate: 'https://news.plantdoctor.app/tips' })
+ *     target: createEntryPoint({ urlTemplate: 'https://blog.plantdoctor.app/tips' })
  *   })
  * })
  * ```
@@ -186,8 +186,8 @@ export function createWebPageSchema(
  * ```tsx
  * const contactPoint = createContactPoint({
  *   contactType: 'Customer Support',
- *   url: 'https://news.plantdoctor.app/support',
- *   email: 'support@news.plantdoctor.app'
+ *   url: 'https://blog.plantdoctor.app/support',
+ *   email: 'support@blog.plantdoctor.app'
  * })
  * ```
  */
@@ -237,7 +237,7 @@ export function createWebSiteSchema(
  *   datePublished: '2025-01-15',
  *   author: createPersonSchema({
  *     name: 'John Doe',
- *     url: 'https://news.plantdoctor.app/authors/john'
+ *     url: 'https://blog.plantdoctor.app/authors/john'
  *   }),
  *   publisher: createOrganizationSchema({
  *     name: blogConfig.site.name,
@@ -265,9 +265,9 @@ export function createArticleSchema(
  * ```tsx
  * const person = createPersonSchema({
  *   name: 'John Doe',
- *   url: 'https://news.plantdoctor.app/authors/john',
+ *   url: 'https://blog.plantdoctor.app/authors/john',
  *   email: 'john@example.com',
- *   image: 'https://news.plantdoctor.app/images/authors/john.jpg'
+ *   image: 'https://blog.plantdoctor.app/images/authors/john.jpg'
  * })
  * ```
  */
@@ -285,7 +285,7 @@ export function createPersonSchema(data: Omit<PersonSchema, '@type'>): PersonSch
  * @example
  * ```tsx
  * const image = createImageObject({
- *   url: 'https://news.plantdoctor.app/images/post.jpg',
+ *   url: 'https://blog.plantdoctor.app/images/post.jpg',
  *   width: 1200,
  *   height: 630,
  *   caption: 'Post cover image'
@@ -306,8 +306,8 @@ export function createImageObject(data: Omit<ImageObjectSchema, '@type'>): Image
  * @example
  * ```tsx
  * const breadcrumbs = createBreadcrumbList([
- *   { name: 'Home', item: 'https://news.plantdoctor.app' },
- *   { name: 'Tips', item: 'https://news.plantdoctor.app/tips' },
+ *   { name: 'Home', item: 'https://blog.plantdoctor.app' },
+ *   { name: 'Tips', item: 'https://blog.plantdoctor.app/tips' },
  *   { name: 'Current Post' }
  * ])
  * ```

@@ -187,10 +187,10 @@ node scripts/distribute-tests-weighted.js
 ### 1. First-Time Setup: Prepare Remote Machine (5 minutes)
 
 ```bash
-cd /Users/fatih/workspace/news.plantdoctor.app
+cd /Users/fatih/workspace/blog.plantdoctor.app
 
 # Prepare the remote machine (update hostname as needed)
-./scripts/prepare-machine.sh dev@moruk /home/user/news.plantdoctor.app
+./scripts/prepare-machine.sh dev@moruk /home/user/blog.plantdoctor.app
 ```
 
 This script will:
@@ -311,7 +311,7 @@ pnpm test:e2e --shard=1/2 -- tests/e2e/homepage.spec.ts
 Make sure the remote path exists or let the script create it:
 
 ```bash
-./scripts/prepare-machine.sh dev@moruk /home/user/news.plantdoctor.app
+./scripts/prepare-machine.sh dev@moruk /home/user/blog.plantdoctor.app
 ```
 
 ### Tests Pass Locally but Fail on Remote
@@ -326,7 +326,7 @@ Make sure the remote path exists or let the script create it:
 
 ```bash
 # Re-prepare the machine
-./scripts/prepare-machine.sh dev@moruk /home/user/news.plantdoctor.app
+./scripts/prepare-machine.sh dev@moruk /home/user/blog.plantdoctor.app
 ```
 
 ### Network Latency Issues
@@ -359,13 +359,13 @@ const MACHINES = [
     id: 1,
     name: 'local',
     host: 'localhost',
-    path: '/Users/fatih/workspace/news.plantdoctor.app',
+    path: '/Users/fatih/workspace/blog.plantdoctor.app',
   },
   {
     id: 2,
     name: 'moruk (remote)',
     host: 'dev@moruk', // ← Update hostname
-    path: '/home/user/news.plantdoctor.app', // ← Update path
+    path: '/home/user/blog.plantdoctor.app', // ← Update path
   },
   // Add more machines here when ready
 ]
@@ -398,13 +398,13 @@ If your paths are different, update:
 1. **Prepare machine 3:**
 
    ```bash
-   ./scripts/prepare-machine.sh dev@machine3 /home/user/news.plantdoctor.app
+   ./scripts/prepare-machine.sh dev@machine3 /home/user/blog.plantdoctor.app
    ```
 
 2. **Prepare machine 4:**
 
    ```bash
-   ./scripts/prepare-machine.sh dev@machine4 /home/user/news.plantdoctor.app
+   ./scripts/prepare-machine.sh dev@machine4 /home/user/blog.plantdoctor.app
    ```
 
 3. **Uncomment machines in `scripts/distribute-tests.js`:**
@@ -470,7 +470,7 @@ If your paths are different, update:
 
 ```bash
 # 1. Prepare remote machine (one-time)
-./scripts/prepare-machine.sh dev@moruk /home/user/news.plantdoctor.app
+./scripts/prepare-machine.sh dev@moruk /home/user/blog.plantdoctor.app
 
 # 2. Run distributed tests
 node scripts/distribute-tests.js

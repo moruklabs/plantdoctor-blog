@@ -209,7 +209,7 @@ describe('Citations Validation', () => {
           signal: controller.signal,
           headers: {
             'User-Agent':
-              'Mozilla/5.0 (compatible; LinkChecker/1.0; +https://news.plantdoctor.app)',
+              'Mozilla/5.0 (compatible; LinkChecker/1.0; +https://blog.plantdoctor.app)',
             Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           },
         })

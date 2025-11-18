@@ -1,7 +1,7 @@
 # Phase 8: SEO Optimization - Comprehensive Audit Report
 
 **Generated:** 2025-11-16
-**Domain:** news.plantdoctor.app
+**Domain:** blog.plantdoctor.app
 **Platform:** Next.js 15 Blog Platform
 **Content:** 856+ blog posts organized in 6 topic clusters
 
@@ -162,7 +162,7 @@ IDEAL: "Custom AI-generated landscape photo using Midjourney, showing misty moun
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://news.plantdoctor.app/tips/post-slug</loc>
+    <loc>https://blog.plantdoctor.app/tips/post-slug</loc>
     <image:image>
       <image:loc>https://cdn.example.com/image.webp</image:loc>
       <image:caption>Detailed description</image:caption>
@@ -260,32 +260,32 @@ BETTER:  "Master 12 proven productivity techniques to increase focus and work ef
 <link
   rel="alternate"
   hreflang="en"
-  href="https://news.plantdoctor.app/tips/post-slug"
+  href="https://blog.plantdoctor.app/tips/post-slug"
 />
 <link
   rel="alternate"
   hreflang="es"
-  href="https://news.plantdoctor.app/es/tips/post-slug"
+  href="https://blog.plantdoctor.app/es/tips/post-slug"
 />
 <link
   rel="alternate"
   hreflang="fr"
-  href="https://news.plantdoctor.app/fr/tips/post-slug"
+  href="https://blog.plantdoctor.app/fr/tips/post-slug"
 />
 <link
   rel="alternate"
   hreflang="de"
-  href="https://news.plantdoctor.app/de/tips/post-slug"
+  href="https://blog.plantdoctor.app/de/tips/post-slug"
 />
 <link
   rel="alternate"
   hreflang="ja"
-  href="https://news.plantdoctor.app/ja/tips/post-slug"
+  href="https://blog.plantdoctor.app/ja/tips/post-slug"
 />
 <link
   rel="alternate"
   hreflang="x-default"
-  href="https://news.plantdoctor.app/tips/post-slug"
+  href="https://blog.plantdoctor.app/tips/post-slug"
 />
 ```
 

@@ -2,7 +2,7 @@
 
 **Conversion Date:** 2025-11-18
 **From:** news.moruk.ai
-**To:** news.plantdoctor.app
+**To:** blog.plantdoctor.app
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### Objectives
 
-- Convert news.moruk.ai template to news.plantdoctor.app
+- Convert news.moruk.ai template to blog.plantdoctor.app
 - Establish plant-focused content structure (Tips, Guides, News)
 - Replace non-plant guides with plant-focused SEO hub guides
 - Fix all image paths, canonical URLs, and metadata
@@ -92,8 +92,8 @@ COMPANY_EMAIL: 'hey@moruk.ai'
 
 // After
 ORGANIZATION_NAME: 'Plant Doctor'
-BLOG_DOMAIN: 'news.plantdoctor.app'
-BLOG_URL: 'https://news.plantdoctor.app'
+BLOG_DOMAIN: 'blog.plantdoctor.app'
+BLOG_URL: 'https://blog.plantdoctor.app'
 COMPANY_EMAIL: 'hey@plantdoctor.app'
 ```
 
@@ -129,9 +129,9 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://news.plantdoctor.app/sitemap.xml
-Sitemap: https://news.plantdoctor.app/news-sitemap.xml
-Sitemap: https://news.plantdoctor.app/image-sitemap.xml
+Sitemap: https://blog.plantdoctor.app/sitemap.xml
+Sitemap: https://blog.plantdoctor.app/news-sitemap.xml
+Sitemap: https://blog.plantdoctor.app/image-sitemap.xml
 ```
 
 ### 1.4 Update CLAUDE.md
@@ -140,7 +140,7 @@ Sitemap: https://news.plantdoctor.app/image-sitemap.xml
 
 **Changes:**
 
-- Updated base URL reference from `news.moruk.ai` to `news.plantdoctor.app`
+- Updated base URL reference from `news.moruk.ai` to `blog.plantdoctor.app`
 - Updated instructions to reflect Plant Doctor context
 
 ### 1.5 Update Guide CTA Configuration
@@ -157,7 +157,7 @@ export const guideCTADefaults = {
   title: 'Ready to Optimize Your Dating Profile?',
   description:
     'Get the complete step-by-step guide with proven strategies, photo selection tips, and real examples that work.',
-  href: 'https://moruk.link/rizzman/app-store?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
+  href: 'https://moruk.link/rizzman/app-store?utm_source=blog.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
   ctaText: 'Download Rizzman AI',
 } as const
 
@@ -166,7 +166,7 @@ export const guideCTADefaults = {
   title: 'Ready to Diagnose Your Plant Problems?',
   description:
     'Get instant AI-powered plant disease diagnosis, care schedules, and expert treatment recommendations. Identify plants, recognize breeds, and save your green friends.',
-  href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
+  href: 'https://moruk.link/plantdoctor?utm_source=blog.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
   ctaText: 'Download Plant Doctor App',
 } as const
 ```
@@ -304,10 +304,10 @@ posts.forEach((post) => {
 **Command:**
 
 ```bash
-find content -name "*.mdx" -exec sed -i '' 's|news\.moruk\.ai|news.plantdoctor.app|g' {} +
+find content -name "*.mdx" -exec sed -i '' 's|news\.moruk\.ai|blog.plantdoctor.app|g' {} +
 ```
 
-**Result:** All canonical URLs now use https://news.plantdoctor.app
+**Result:** All canonical URLs now use https://blog.plantdoctor.app
 
 ---
 
@@ -352,7 +352,7 @@ tags:
   ]
 date: '2025-11-18'
 draft: false
-canonical: 'https://news.plantdoctor.app/guides/indoor-plant-pest-disease-management'
+canonical: 'https://blog.plantdoctor.app/guides/indoor-plant-pest-disease-management'
 coverImage: '/images/webp/guides/indoor-plant-pest-disease-management.webp'
 ogImage: '/images/webp/guides/indoor-plant-pest-disease-management.webp'
 readingTime: 15
@@ -389,7 +389,7 @@ tags:
   ]
 date: '2025-11-18'
 draft: false
-canonical: 'https://news.plantdoctor.app/guides/succulent-care-rescue-mastery'
+canonical: 'https://blog.plantdoctor.app/guides/succulent-care-rescue-mastery'
 coverImage: '/images/webp/guides/succulent-care-rescue-mastery.webp'
 ogImage: '/images/webp/guides/succulent-care-rescue-mastery.webp'
 readingTime: 12
@@ -426,7 +426,7 @@ tags:
   ]
 date: '2025-11-18'
 draft: false
-canonical: 'https://news.plantdoctor.app/guides/ai-plant-diagnosis-photo-guide'
+canonical: 'https://blog.plantdoctor.app/guides/ai-plant-diagnosis-photo-guide'
 coverImage: '/images/webp/guides/ai-plant-diagnosis-photo-guide.webp'
 ogImage: '/images/webp/guides/ai-plant-diagnosis-photo-guide.webp'
 readingTime: 10
@@ -781,7 +781,7 @@ let fixed = 0
 
 posts.forEach((file) => {
   const slug = file.replace('.mdx', '')
-  const expectedCanonical = `https://news.plantdoctor.app/tips/${slug}`
+  const expectedCanonical = `https://blog.plantdoctor.app/tips/${slug}`
   const filePath = path.join(postsDir, file)
 
   let content = fs.readFileSync(filePath, 'utf8')
@@ -862,9 +862,9 @@ pnpm test canonical-urls
 
 **Result:** ✅ All tests passing
 
-- All posts use https://news.plantdoctor.app/tips/
-- All guides use https://news.plantdoctor.app/guides/
-- All news use https://news.plantdoctor.app/news/
+- All posts use https://blog.plantdoctor.app/tips/
+- All guides use https://blog.plantdoctor.app/guides/
+- All news use https://blog.plantdoctor.app/news/
 - No duplicate canonical URLs
 - All URLs use HTTPS
 
@@ -1146,7 +1146,7 @@ import { getUrlForApp } from '@/lib/content/apps'
 
 - 100% have valid cover images
 - 100% have correct canonical URLs
-- 100% use https://news.plantdoctor.app domain
+- 100% use https://blog.plantdoctor.app domain
 
 **Guides:** 3 SEO hub guides
 
@@ -1177,7 +1177,7 @@ import { getUrlForApp } from '@/lib/content/apps'
 - [x] All 188 posts have correct image paths
 - [x] All 188 posts have correct canonical URLs
 - [x] All 188 posts have coverImage + ogImage
-- [x] All posts use https://news.plantdoctor.app domain
+- [x] All posts use https://blog.plantdoctor.app domain
 - [x] 6 non-plant guides deleted
 - [x] 3 plant-focused SEO hub guides created
 - [x] Guide-related-content configuration updated
@@ -1194,9 +1194,9 @@ import { getUrlForApp } from '@/lib/content/apps'
 
 ### 📋 Deployment Checklist
 
-- [ ] Update DNS records (point news.plantdoctor.app to hosting)
+- [ ] Update DNS records (point blog.plantdoctor.app to hosting)
 - [ ] Update environment variables in production
-- [ ] Configure SSL certificate for news.plantdoctor.app
+- [ ] Configure SSL certificate for blog.plantdoctor.app
 - [ ] Update Google Search Console with new domain
 - [ ] Submit new sitemap to search engines
 - [ ] Update social media profiles with new domain
@@ -1272,7 +1272,7 @@ cp public/images/webp/tips/similar-topic.webp \
 ```javascript
 // See Phase 8.2 for full script
 // Or manually fix specific file
-sed -i '' 's|canonical: .*|canonical: '\''https://news.plantdoctor.app/tips/EXACT-SLUG'\''|' \
+sed -i '' 's|canonical: .*|canonical: '\''https://blog.plantdoctor.app/tips/EXACT-SLUG'\''|' \
   content/posts/[slug].mdx
 ```
 
@@ -1378,7 +1378,7 @@ grep -r "pattern" content/
 
 ## Conclusion
 
-The rebranding from news.moruk.ai to news.plantdoctor.app was successfully completed with:
+The rebranding from news.moruk.ai to blog.plantdoctor.app was successfully completed with:
 
 - ✅ 100% brand consistency across all files
 - ✅ 3 comprehensive plant-focused SEO hub guides
