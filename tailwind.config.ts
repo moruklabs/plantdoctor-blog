@@ -140,6 +140,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [
+    // @ts-expect-error - Tailwind plugins don't have proper type definitions
+    (await import('tailwindcss-animate')).default,
+    // @ts-expect-error - Tailwind plugins don't have proper type definitions
+    (await import('@tailwindcss/typography')).default,
+  ],
 }
 export default config

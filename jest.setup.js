@@ -14,7 +14,7 @@ global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
 
 // Polyfill crypto.subtle for jsdom using Node.js crypto
-const { webcrypto } = require('crypto')
+import { webcrypto } from 'node:crypto'
 
 // Set crypto on global object
 Object.defineProperty(global, 'crypto', {

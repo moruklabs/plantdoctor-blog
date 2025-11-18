@@ -4,11 +4,14 @@
  * Validates that old /blog URLs redirect to new /tips URLs
  */
 
+import fs from 'fs'
+import path from 'path'
+
 describe('Blog to Tips URL Redirects', () => {
   it('should have redirects defined in middleware for /blog paths', () => {
     // Read middleware file and check for redirects
-    const middlewareContent = require('fs').readFileSync(
-      require('path').join(process.cwd(), 'middleware.ts'),
+    const middlewareContent = fs.readFileSync(
+      path.join(process.cwd(), 'middleware.ts'),
       'utf-8',
     )
 
@@ -20,8 +23,8 @@ describe('Blog to Tips URL Redirects', () => {
   })
 
   it('should use 301 permanent redirects for SEO', () => {
-    const middlewareContent = require('fs').readFileSync(
-      require('path').join(process.cwd(), 'middleware.ts'),
+    const middlewareContent = fs.readFileSync(
+      path.join(process.cwd(), 'middleware.ts'),
       'utf-8',
     )
 
@@ -32,8 +35,8 @@ describe('Blog to Tips URL Redirects', () => {
   })
 
   it('should redirect /blog to /tips exactly', () => {
-    const middlewareContent = require('fs').readFileSync(
-      require('path').join(process.cwd(), 'middleware.ts'),
+    const middlewareContent = fs.readFileSync(
+      path.join(process.cwd(), 'middleware.ts'),
       'utf-8',
     )
 
@@ -43,8 +46,8 @@ describe('Blog to Tips URL Redirects', () => {
   })
 
   it('should redirect /blog/* to /tips/* pattern', () => {
-    const middlewareContent = require('fs').readFileSync(
-      require('path').join(process.cwd(), 'middleware.ts'),
+    const middlewareContent = fs.readFileSync(
+      path.join(process.cwd(), 'middleware.ts'),
       'utf-8',
     )
 
@@ -56,8 +59,8 @@ describe('Blog to Tips URL Redirects', () => {
   it('should maintain query parameters and hashes in redirects', () => {
     // This is implicit in the middleware implementation
     // When creating new URL with pathname.replace, query params are preserved
-    const middlewareContent = require('fs').readFileSync(
-      require('path').join(process.cwd(), 'middleware.ts'),
+    const middlewareContent = fs.readFileSync(
+      path.join(process.cwd(), 'middleware.ts'),
       'utf-8',
     )
 

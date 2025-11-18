@@ -84,9 +84,9 @@ describe('Citations Validation', () => {
   const postsDir = path.join(process.cwd(), 'content/posts')
   const guidesDir = path.join(process.cwd(), 'content/guides')
 
-  let allCitations: Citation[] = []
+  const allCitations: Citation[] = []
   let validationResults: ValidationResult[] = []
-  let linkCache = new Map<string, ValidationResult>()
+  const linkCache = new Map<string, ValidationResult>()
 
   // Increase Jest timeout for network requests
   jest.setTimeout(90000) // 1.5 minutes

@@ -73,9 +73,9 @@ const EXCLUDED_DOMAINS = [
 ]
 
 describe('External Links Validation', () => {
-  let allExternalLinks: ExternalLink[] = []
+  const allExternalLinks: ExternalLink[] = []
   let validationResults: ValidationResult[] = []
-  let linkCache = new Map<string, ValidationResult>()
+  const linkCache = new Map<string, ValidationResult>()
 
   // Increase Jest timeout for network requests
   jest.setTimeout(60000) // 1 minute
