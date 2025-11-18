@@ -1,4 +1,5 @@
 import matter from 'gray-matter'
+import yaml from 'js-yaml'
 import { marked } from 'marked'
 import { generateCalloutHtml } from './callout-config'
 
@@ -107,7 +108,14 @@ export interface ProcessedPost {
 
 export function processMDX(source: string, slug: string): ProcessedPost {
   // Parse frontmatter and content
-  const { data: frontmatter, content } = matter(source)
+  // Use js-yaml 4.x API (load instead of deprecated safeLoad)
+  const { data: frontmatter, content } = matter(source, {
+    engines: {
+      yaml: {
+        parse: (str: string) => yaml.load(str) as Record<string, unknown>,
+      },
+    },
+  })
 
   // Process Callout components BEFORE running marked to avoid regex matching issues
   // This uses a token-based approach to safely handle callouts
