@@ -203,7 +203,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
             {/* Guide CTA */}
             <section className="mb-8">
-              <ContentCTA />
+              <ContentCTA tags={metadata.tags} />
             </section>
 
             {/* Share Buttons */}

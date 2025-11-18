@@ -5,4 +5,3 @@ export const guideCTADefaults = {
   href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
   ctaText: 'Download Plant Doctor App',
 } as const
-

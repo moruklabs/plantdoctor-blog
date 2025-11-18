@@ -219,7 +219,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
 
             {/* Guide CTA */}
             <section className="mb-8">
-              <ContentCTA />
+              <ContentCTA tags={metadata.tags} />
             </section>
 
             {/* Share Buttons */}

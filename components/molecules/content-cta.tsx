@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { InternalLink } from '@/components/links'
 import { Heading, Text } from '@/components/atoms'
-import { guideCTADefaults } from '@/config/guide-cta'
+import { getCTAVariant } from '@/config/cta-variants'
 
 interface ContentCTAProps {
   title?: string
@@ -11,14 +11,17 @@ interface ContentCTAProps {
   href?: string
   ctaText?: string
   position?: 'inline' | 'sidebar'
+  tags?: string[]
 }
 
-export function ContentCTA({
-  title = guideCTADefaults.title,
-  description = guideCTADefaults.description,
-  href = guideCTADefaults.href,
-  ctaText = guideCTADefaults.ctaText,
-}: ContentCTAProps) {
+export function ContentCTA({ title, description, href, ctaText, tags = [] }: ContentCTAProps) {
+  const variant = getCTAVariant(tags)
+
+  const finalTitle = title || variant.title
+  const finalDescription = description || variant.description
+  const finalHref = href || variant.href
+  const finalCtaText = ctaText || variant.ctaText
+
   return (
     <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20">
       <CardContent className="p-6 sm:p-8">
@@ -40,19 +43,19 @@ export function ContentCTA({
             </div>
             <div className="flex-1">
               <Heading level={3} className="text-xl sm:text-2xl text-foreground mb-2">
-                {title}
+                {finalTitle}
               </Heading>
-              <Text className="text-muted-foreground text-sm sm:text-base">{description}</Text>
+              <Text className="text-muted-foreground text-sm sm:text-base">{finalDescription}</Text>
             </div>
           </div>
 
           {/* CTA Button */}
           <InternalLink
-            href={href}
+            href={finalHref}
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 hover:gap-3 group"
-            aria-label={ctaText}
+            aria-label={finalCtaText}
           >
-            {ctaText}
+            {finalCtaText}
             <svg
               width="16"
               height="16"
