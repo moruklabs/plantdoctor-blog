@@ -35,10 +35,11 @@ describe('Static Export Validation', () => {
         }
 
         // Map route types to content directory names
-        // tips -> content/posts, guides -> content/guides
+        // tips -> content/posts, guides -> content/guides, news -> content/news
         const contentTypeMap: Record<string, string> = {
           tips: 'content/posts',
           guides: 'content/guides',
+          news: 'content/news',
         }
 
         const contentType = contentTypeMap[routeType] || routeType
