@@ -15,7 +15,7 @@
  * - Improved E-E-A-T signals
  */
 
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import path from 'path'
 import fs from 'fs'
 import { validateFrontmatter, type PostFrontmatter } from '@/lib/content/mdx-processor'
@@ -142,7 +142,7 @@ function escapeXml(str: string): string {
  * GET /image-sitemap.xml
  * Returns the image sitemap
  */
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const posts = getAllPostsWithImages()
     const sitemap = generateImageSitemap(posts)
