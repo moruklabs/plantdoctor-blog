@@ -90,6 +90,23 @@ const TRANSIENT_ERROR_PATTERNS = [
   'network timeout',
 ]
 
+// Permanent 4xx codes that should be cached
+const PERMANENT_4XX_CODES = [
+  400, // Bad Request
+  401, // Unauthorized
+  403, // Forbidden
+  404, // Not Found
+  405, // Method Not Allowed
+  410, // Gone
+]
+
+// Transient 4xx codes that should NOT be cached long-term
+const TRANSIENT_4XX_CODES = [
+  408, // Request Timeout
+  425, // Too Early
+  429, // Too Many Requests
+]
+
 // Domains that often block automated requests or have strict rate limits
 const EXCLUDED_DOMAINS = [
   'linkedin.com',
@@ -219,6 +236,20 @@ describe('External Links Validation', () => {
     return TRANSIENT_ERROR_PATTERNS.some((pattern) =>
       errorMessage.toLowerCase().includes(pattern.toLowerCase()),
     )
+  }
+
+  /**
+   * Check if a 4xx status code is permanent (should be cached)
+   */
+  function isPermanent4xx(status: number): boolean {
+    return PERMANENT_4XX_CODES.includes(status)
+  }
+
+  /**
+   * Check if a 4xx status code is transient (should not be cached long-term)
+   */
+  function isTransient4xx(status: number): boolean {
+    return TRANSIENT_4XX_CODES.includes(status)
   }
 
   /**
@@ -381,10 +412,16 @@ describe('External Links Validation', () => {
           error: response.ok ? undefined : `HTTP ${response.status} ${response.statusText}`,
         }
 
-        // Cache successful results and 4xx errors (likely permanent)
-        if (response.ok || (response.status >= 400 && response.status < 500)) {
+        // Cache successful results and truly permanent 4xx errors
+        if (response.ok || isPermanent4xx(response.status)) {
           linkCache.set(url, result)
           cacheResult(url, result, persistentCache)
+        } else if (isTransient4xx(response.status)) {
+          // Transient 4xx: memory cache only
+          linkCache.set(url, result)
+          console.warn(
+            `⚠️  Transient 4xx not cached: ${url} - ${response.status} ${response.statusText}`,
+          )
         }
 
         return result
