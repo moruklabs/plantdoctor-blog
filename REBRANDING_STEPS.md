@@ -19,8 +19,9 @@
 9. [Phase 7: Apps Section Removal](#phase-7-apps-section-removal)
 10. [Phase 8: Test Updates](#phase-8-test-updates)
 11. [Phase 9: Final Validation](#phase-9-final-validation)
-12. [Summary Statistics](#summary-statistics)
-13. [Post-Conversion Checklist](#post-conversion-checklist)
+12. [Phase 10: Testimonials Regeneration](#phase-10-testimonials-regeneration)
+13. [Summary Statistics](#summary-statistics)
+14. [Post-Conversion Checklist](#post-conversion-checklist)
 
 ---
 
@@ -141,6 +142,44 @@ Sitemap: https://news.plantdoctor.app/image-sitemap.xml
 
 - Updated base URL reference from `news.moruk.ai` to `news.plantdoctor.app`
 - Updated instructions to reflect Plant Doctor context
+
+### 1.5 Update Guide CTA Configuration
+
+**File:** `config/guide-cta.ts`
+
+**Problem:** Guide CTA component still had dating-focused content (Rizzman AI references)
+
+**Changes:**
+
+```typescript
+// Before
+export const guideCTADefaults = {
+  title: 'Ready to Optimize Your Dating Profile?',
+  description:
+    'Get the complete step-by-step guide with proven strategies, photo selection tips, and real examples that work.',
+  href: 'https://moruk.link/rizzman/app-store?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
+  ctaText: 'Download Rizzman AI',
+} as const
+
+// After
+export const guideCTADefaults = {
+  title: 'Ready to Diagnose Your Plant Problems?',
+  description:
+    'Get instant AI-powered plant disease diagnosis, care schedules, and expert treatment recommendations. Identify plants, recognize breeds, and save your green friends.',
+  href: 'https://moruk.link/plantdoctor?utm_source=news.plantdoctor.app&utm_medium=referral&utm_campaign=guide-cta',
+  ctaText: 'Download Plant Doctor App',
+} as const
+```
+
+**Component Changes:**
+
+- Renamed `GuideCTA` component to `ContentCTA` (more generic name)
+- Renamed file from `guide-cta.tsx` to `content-cta.tsx`
+- Updated all imports in `app/tips/[slug]/page.tsx` and `app/news/[slug]/page.tsx`
+- Updated export in `components/molecules/index.ts`
+- Added config export to `config/index.ts`
+
+**Result:** CTA now promotes Plant Doctor app with plant-focused messaging
 
 ---
 
@@ -872,6 +911,200 @@ Route (app)                                    Size  First Load JS
 
 ---
 
+## Phase 10: Testimonials Regeneration
+
+### 10.1 Problem Analysis
+
+**Current State:**
+The testimonials section contained references to multiple Moruk apps:
+
+- Breathe Easy (meditation app)
+- Minday (productivity app)
+- Plant Doctor (2 testimonials)
+- Rizzman (dating app)
+- Text Pro (writing app)
+
+**Issues:**
+
+1. Mixed app testimonials not relevant to Plant Doctor News
+2. `appSlug` property linking to deleted /apps section
+3. `platform` field (iOS/Android) not meaningful for blog content
+4. Copy referenced "apps" plural, not plant care focus
+
+### 10.2 Update config/testimonials.ts
+
+**File:** `config/testimonials.ts`
+
+**Interface Changes:**
+
+```typescript
+// Before
+export interface Testimonial {
+  id: string
+  name: string
+  age: number
+  text: string
+  rating: number
+  platform?: string // iOS, Android, etc.
+  icon?: string
+  achievement?: string
+  appSlug?: string // Link to app page (deleted)
+}
+
+// After
+export interface Testimonial {
+  id: string
+  name: string
+  age: number
+  text: string
+  rating: number
+  location?: string // Geographic location
+  icon?: string
+  achievement?: string
+  plantType?: string // Type of plant they care for
+}
+```
+
+**Copy Changes:**
+
+```typescript
+// Before
+export const TESTIMONIALS_COPY = {
+  title: 'What Our Users Are Saying',
+  lead: `Discover how our apps are helping real people improve their wellness, productivity, and daily life. From mindfulness to plant care, see the impact of AI-powered solutions.`,
+}
+
+// After
+export const TESTIMONIALS_COPY = {
+  title: 'Success Stories from Plant Parents',
+  lead: `Discover how Plant Doctor has helped thousands of plant enthusiasts save their green friends, diagnose diseases accurately, and build thriving indoor gardens with expert care guidance.`,
+}
+```
+
+**New Testimonials:**
+
+All 6 testimonials replaced with plant-focused success stories:
+
+1. **Emma Chen (35)** - Fiddle Leaf Fig rescue from root rot
+   - Location: San Francisco, CA
+   - Achievement: "Saved 12 dying plants"
+   - Icon: 🌿
+
+2. **David Martinez (42)** - Indoor jungle success with monstera
+   - Location: Austin, TX
+   - Achievement: "50+ healthy plants"
+   - Icon: 🪴
+
+3. **Sarah Thompson (28)** - Beginner plant parent with pothos
+   - Location: Seattle, WA
+   - Achievement: "Zero plant losses in 6 months"
+   - Icon: 🌱
+
+4. **Michael Kim (39)** - Succulent collection pest management
+   - Location: Phoenix, AZ
+   - Achievement: "Pest-free for 8 months"
+   - Icon: 🌵
+
+5. **Lisa Johnson (31)** - Fungus gnat elimination using blog guides
+   - Location: Portland, OR
+   - Achievement: "Eliminated fungus gnats"
+   - Icon: 🦟
+
+6. **James Rodriguez (45)** - Orchid growing success
+   - Location: Miami, FL
+   - Achievement: "15 orchids thriving"
+   - Icon: 🌺
+
+**Key Features:**
+
+- Diverse plant types (fiddle leaf fig, monstera, pothos, succulents, orchids)
+- Geographic diversity (6 different US cities)
+- Range of experience levels (beginner to experienced)
+- Specific plant care problems solved (root rot, pests, disease, watering)
+- Credible achievements and growth metrics
+
+### 10.3 Update components/organisms/testimonials.tsx
+
+**File:** `components/organisms/testimonials.tsx`
+
+**Removed Dependencies:**
+
+```typescript
+// Before
+import Link from 'next/link'
+import { getUrlForApp } from '@/lib/content/apps'
+
+// After
+// (removed - no longer needed)
+```
+
+**Component Simplification:**
+
+**Before:**
+
+- Complex `CardWrapper` logic with conditional Link wrapper
+- `appSlug` check for clickable cards
+- `platform` display (iOS/Android)
+- Arrow icon for linked cards
+
+**After:**
+
+- Simple `div` card wrapper (no links)
+- `location` display instead of platform
+- `plantType` display with visual indicator
+- Cleaner, focused on testimonial content
+
+**Display Changes:**
+
+```tsx
+{
+  /* Before */
+}
+{
+  testimonial.platform && (
+    <p className="text-sm text-muted-foreground">{testimonial.platform} user</p>
+  )
+}
+
+{
+  /* After */
+}
+{
+  testimonial.location && (
+    <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+  )
+}
+{
+  testimonial.plantType && (
+    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+      <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span>
+      {testimonial.plantType}
+    </p>
+  )
+}
+```
+
+**Result:**
+
+- Clean testimonials without app references
+- Plant-focused success stories
+- No broken links to /apps
+- Better alignment with Plant Doctor News mission
+
+### 10.4 Files Changed
+
+**Modified:**
+
+- `config/testimonials.ts` (complete rewrite)
+- `components/organisms/testimonials.tsx` (simplified)
+
+**Lines Changed:**
+
+- config/testimonials.ts: 92 lines modified (interface, copy, all 6 testimonials)
+- components/organisms/testimonials.tsx: 77 lines (removed Link import, simplified JSX)
+
+---
+
 ## Summary Statistics
 
 ### Files Changed
@@ -895,8 +1128,8 @@ Route (app)                                    Size  First Load JS
 **Modified:**
 
 - 188 blog post MDX files (image paths, canonical URLs, frontmatter)
-- 15 configuration files
-- 10 component files
+- 16 configuration files (including guide-cta.ts)
+- 11 component files (including ContentCTA component rename)
 - 8 test files
 - 5 documentation files
 
@@ -938,6 +1171,8 @@ Route (app)                                    Size  First Load JS
 ### ✅ Completed
 
 - [x] Brand configuration updated (constants, manifest, robots.txt)
+- [x] Guide CTA configuration updated (plant-focused messaging, Plant Doctor app link)
+- [x] ContentCTA component renamed and refactored (extracted config, updated imports)
 - [x] Favicons generated for all sizes
 - [x] All 188 posts have correct image paths
 - [x] All 188 posts have correct canonical URLs
