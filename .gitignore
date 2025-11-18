@@ -1,0 +1,139 @@
+# Node & package managers
+node_modules/
+.pnpm-store/
+package-lock.json
+yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+pnpm-debug.log*
+
+# Logs & diagnostics
+logs/
+outputs/
+*.log
+*.log.*
+*.pid
+*.seed
+*.tmp
+*.bak
+
+# Build artifacts
+.next/
+.turbo/
+.swc/
+out/
+build/
+dist/
+coverage/
+coverage-*/
+reports/
+tmp/
+.cache/
+.api-backup/
+
+# Image processing backups
+public/images/**/.backup/
+
+# Lighthouse & analysis
+.lighthouseci/
+.lighthouse-urls.tmp
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.local.example
+
+# Deployment providers
+.vercel/
+
+# Testing
+.nyc_output/
+.jest/
+jest-*.json
+coverage-final.json
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# IDE & editor artifacts
+.vscode/
+.idea/
+.vs/
+.fleet/
+.history/
+.direnv/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swo
+*~
+*.orig
+*.rej
+.DS_Store
+Thumbs.db
+.eslintcache
+.stylelintcache
+*.code-workspace
+.envrc
+.tool-versions
+
+# Cursor & Claude tooling artifacts
+.cursor/
+.claude/**/__pycache__/
+.claude/**/*.pyc
+.claude/hooks/logs/
+.claude/hooks/utils/tts/logs/
+.claude/agents/product-lead.md
+.claude/agents/product-manager.md
+.claude/agents/product-owner.md
+
+# Python tooling cache directories
+.pytest_cache/
+.ruff_cache/
+.uv-cache/
+.uv-tools/
+.venv/
+
+diff-analysis.xml
+repomix-output.xml
+repomix.xml
+repomix-output.md
+.claude/settings.local.json
+.vercel
+
+# Temporary content generation artifacts
+outputs/tmp/
+
+# Playwright MCP artifacts
+.playwright-mcp/
+
+# Planning documents (already implemented)
+.ai/plannings/
+
+# Broken symlinks to local workspace (environment-specific)
+CLI_TOOLS.md
+MCP-SERVERS.md
+tests/**snapshots/
+/blog.moruk.ai-compressed.xml
+
+# Auto-generated project structure
+PROJECT_STRUCTURE.md
+
+# Task management - agent identifiers (session-specific)
+.agent-id
+
+# Temporary image processing directories
+public/apps-screenshots/original/
+public/images/webp/.backup/
