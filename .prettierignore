@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Build outputs
+.next/
+out/
+dist/
+
+# Generated files
+tsconfig.tsbuildinfo
+.eslintcache
+
+# Logs
+*.log
+
+# Environment files
+.env*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Testing coverage
+coverage/
+
+# Lighthouse CI
+.lighthouseci/
+.lighthouserc.js
+
+# Don't format package-lock files
+package-lock.json
+yarn.lock

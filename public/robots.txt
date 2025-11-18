@@ -1,0 +1,15 @@
+# Moruk News robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://news.plantdoctor.app/sitemap.xml
+Sitemap: https://news.plantdoctor.app/news-sitemap.xml
+Sitemap: https://news.plantdoctor.app/image-sitemap.xml
+
+# Disallow admin/API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /manifest.json
+Disallow: /favicon.ico
+Disallow: /ping

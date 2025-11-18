@@ -1,0 +1,38 @@
+# Symlinked files that cause build issues
+CLAUDE.md
+CLI_TOOLS.md
+GEMINI.md
+MCP-SERVERS.md
+WARP.md
+
+# Development files
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+test-results/
+playwright-report/
+logs/
+*.log
+
+# Build artifacts
+.next/
+out/
+node_modules/
+.pnpm-store/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (keep .env.example)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

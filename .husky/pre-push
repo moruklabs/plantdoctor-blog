@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+cd "$(dirname "$0")/.."
+
+# Check if pnpm is available, install if not
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "pnpm not found, installing globally..."
+  npm install -g pnpm
+fi
+
+# Check if node_modules exists, install dependencies if not
+if [ ! -d "node_modules" ]; then
+  echo "node_modules not found, installing dependencies..."
+  pnpm install --frozen-lockfile
+fi
+
+# Run pre-push validation
+pnpm tsx scripts/prepush.ts

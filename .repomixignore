@@ -1,0 +1,37 @@
+# Build / cache
+dist/
+build/
+out/
+tmp/
+.cache/
+
+# Logs
+*.log
+
+# Secrets
+.env
+.env.*
+secrets/
+*.md
+.gitowner
+.prettierignore
+.repomixignore
+.prettierrc
+pnpm-lock.yaml
+repomix.xml
+*.mdx
+.claude/
+.vscode/
+.github/
+.husky/
+.pnpm-workspace.yaml
+.pnpm-lock.yaml
+.pnpm-workspace.yaml
+.pnpm-store/
+*.txt
+scripts/setup-actionlint.sh
+scripts/cleanup-artifacts.sh
+repomix.config.json
+prompts/outline_prompt.txt
+.github/workflows/ci-build.yml
+*.sh

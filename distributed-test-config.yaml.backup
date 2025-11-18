@@ -1,0 +1,77 @@
+# Distributed Testing Configuration
+# Auto-generated capacity-based test distribution
+
+machines:
+  - id: 1
+    name: "local"
+    host: "localhost"
+    path: "/Users/fatih/workspace/news.plantdoctor.app"
+    capacity:
+      cpu_cores: 16
+      ram_gb: 64
+      architecture: "arm64"
+      cpu_model: "Apple M4 Max"
+    weight: 0.31  # 16/52 cores = 30.8%
+    recommended_workers: 8
+
+  - id: 2
+    name: "moruk"
+    host: "dev@moruk"
+    path: "/home/dev/news.plantdoctor.app"
+    capacity:
+      cpu_cores: 24
+      ram_gb: 91
+      architecture: "x86_64"
+    weight: 0.46  # 24/52 cores = 46.2%
+    recommended_workers: 12
+
+  - id: 3
+    name: "ilko1"
+    host: "ilko1"
+    path: "/home/yavuz1/news.plantdoctor.app"
+    capacity:
+      cpu_cores: 4
+      ram_gb: 11
+      architecture: "x86_64"
+    weight: 0.08  # 4/52 cores = 7.7%
+    recommended_workers: 4
+
+  - id: 4
+    name: "ilko2"
+    host: "ilko2"
+    path: "/home/yavuz5/news.plantdoctor.app"
+    capacity:
+      cpu_cores: 4
+      ram_gb: 6
+      architecture: "x86_64"
+    weight: 0.08  # 4/52 cores = 7.7%
+    recommended_workers: 3
+
+  - id: 5
+    name: "pi"
+    host: "pi"
+    path: "/home/fatih/news.plantdoctor.app"
+    capacity:
+      cpu_cores: 4
+      ram_gb: 7
+      architecture: "aarch64"
+    weight: 0.08  # 4/52 cores = 7.7%
+    recommended_workers: 3
+
+# Capacity summary
+total:
+  cpu_cores: 52
+  ram_gb: 185
+
+# Distribution strategy
+# Instead of equal shards (1/5, 2/5, etc.), use weighted distribution:
+# - moruk (most powerful): ~46% of tests
+# - local (M4 Max): ~31% of tests
+# - ilko1, ilko2, pi: ~8% each
+
+# Performance estimate with capacity-aware distribution:
+# - Without distribution: 60 min
+# - With 5 machines (weighted): ~8-10 min (6-7.5x faster)
+
+# Usage:
+#   node scripts/distribute-tests.js --machines=5 --weighted

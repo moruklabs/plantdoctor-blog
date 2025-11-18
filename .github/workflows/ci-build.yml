@@ -1,0 +1,101 @@
+name: CI Build
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22.13.1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    name: Validate
+    runs-on: ubuntu-latest
+    outputs:
+      should-skip: ${{ steps.changed.outputs.should-skip }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for MDX-only changes
+        id: changed
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            changed_files=$(git diff --name-only HEAD^ HEAD)
+            if [[ -n "$changed_files" && $(echo "$changed_files" | grep -c -v '\.mdx$') -eq 0 ]]; then
+              echo "should-skip=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "should-skip=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "should-skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup pnpm
+        if: steps.changed.outputs.should-skip != 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        if: steps.changed.outputs.should-skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        if: steps.changed.outputs.should-skip != 'true'
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_ENV"
+
+      - name: Cache pnpm store
+        if: steps.changed.outputs.should-skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Cache Next.js build
+        if: steps.changed.outputs.should-skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/*.mdx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+      - name: Install dependencies
+        if: steps.changed.outputs.should-skip != 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify required commands exist
+        if: steps.changed.outputs.should-skip != 'true'
+        run: |
+          echo "Verifying required pnpm scripts..."
+          pnpm run --help > /dev/null || exit 1
+
+          # Check lighthouse command
+          pnpm run lh:ci --help > /dev/null || { echo "❌ lh:ci script missing"; exit 1; }
+
+          # Check concurrently is available
+          pnpm concurrently --version > /dev/null || { echo "❌ concurrently not installed"; exit 1; }
+
+          # Check concurrently is available
+          pnpm run validate --version > /dev/null || { echo "❌ concurrently not installed"; exit 1; }
+
+          echo "✅ All required commands verified successfully"
+
+      - name: quality-checks
+        run: pnpm validate

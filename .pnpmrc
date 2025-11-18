@@ -1,0 +1,23 @@
+auto-install-peers = true
+# Performance optimizations for Next.js builds
+strict-peer-dependencies=true
+network-concurrency=8
+symlink-resolution-priority=shorter
+compression-level=0
+use-node-version-resolver=true
+
+# Caching optimizations
+cache-max-age=1209600000
+verify-store-integrity=true
+
+# Hoisting patterns for Next.js dependencies
+hoist-pattern[]=*next*
+hoist-pattern[]=*webpack*
+hoist-pattern[]=*babel*
+hoist-pattern[]=*eslint*
+hoist-pattern[]=*@types*
+
+# Workspace optimizations
+node-linker=hoisted
+dedupe-peer-dependencies=true
+resolution-mode=highest

@@ -1,0 +1,66 @@
+# Distributed Testing Configuration
+# Temporary config excluding ilko1 (not ready)
+
+machines:
+  - id: 1
+    name: 'local'
+    host: 'localhost'
+    path: '/Users/fatih/workspace/news.plantdoctor.app'
+    capacity:
+      cpu_cores: 16
+      ram_gb: 64
+      architecture: 'arm64'
+      cpu_model: 'Apple M4 Max'
+    weight: 0.33 # 16/48 cores = 33.3%
+    recommended_workers: 8
+
+  - id: 2
+    name: 'moruk'
+    host: 'dev@moruk'
+    path: '/home/dev/news.plantdoctor.app'
+    capacity:
+      cpu_cores: 24
+      ram_gb: 91
+      architecture: 'x86_64'
+    weight: 0.50 # 24/48 cores = 50%
+    recommended_workers: 12
+
+  - id: 3
+    name: 'ilko2'
+    host: 'ilko2'
+    path: '/home/yavuz5/news.plantdoctor.app'
+    capacity:
+      cpu_cores: 4
+      ram_gb: 6
+      architecture: 'x86_64'
+    weight: 0.08 # 4/48 cores = 8.3%
+    recommended_workers: 3
+
+  - id: 4
+    name: 'pi'
+    host: 'pi'
+    path: '/home/fatih/news.plantdoctor.app'
+    capacity:
+      cpu_cores: 4
+      ram_gb: 7
+      architecture: 'aarch64'
+    weight: 0.08 # 4/48 cores = 8.3%
+    recommended_workers: 3
+
+# Capacity summary
+total:
+  cpu_cores: 48
+  ram_gb: 168
+# Distribution strategy
+# Capacity-aware distribution with 4 machines (ilko1 excluded):
+# - moruk (most powerful): 50% of tests (24 shards)
+# - local (M4 Max): 33% of tests (16 shards)
+# - ilko2, pi: 8.3% each (4 shards each)
+
+# Performance estimate with capacity-aware distribution:
+# - Without distribution: 60 min
+# - With 4 machines (weighted): ~10-12 min (5-6x faster)
+
+# Usage:
+#   pnpm e2e:distributed
+#   node scripts/distribute-tests-weighted.js

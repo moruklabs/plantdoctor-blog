@@ -126,7 +126,7 @@ outputs/tmp/
 CLI_TOOLS.md
 MCP-SERVERS.md
 tests/**snapshots/
-/blog.moruk.ai-compressed.xml
+/news.plantdoctor.app-compressed.xml
 
 # Auto-generated project structure
 PROJECT_STRUCTURE.md

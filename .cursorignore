@@ -1,0 +1,169 @@
+# Cursor Ignore File
+# Patterns to exclude from Cursor's context indexing
+
+# ============================================================================
+# Dependencies & Package Managers
+# ============================================================================
+node_modules/
+.pnpm-store/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================================================
+# Build Artifacts & Output
+# ============================================================================
+.next/
+.turbo/
+.swc/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# ============================================================================
+# Test Artifacts & Reports
+# ============================================================================
+coverage/
+coverage-*/
+test-results/
+playwright-report/
+playwright/.cache/
+.nyc_output/
+.jest/
+jest-*.json
+coverage-final.json
+tests/**/*.snapshots/
+tests/**/*.spec.ts-snapshots/
+
+# ============================================================================
+# Generated Files & Outputs
+# ============================================================================
+PROJECT_STRUCTURE.md
+outputs/
+*.log
+*.log.*
+*.pid
+*.seed
+*.tmp
+*.bak
+diff-analysis.xml
+repomix-output.xml
+repomix.xml
+repomix-output.md
+news.plantdoctor.app-compressed.xml
+
+# ============================================================================
+# Environment & Secrets
+# ============================================================================
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.local.example
+
+# ============================================================================
+# IDE & Editor Artifacts
+# ============================================================================
+.vscode/
+.idea/
+.vs/
+.fleet/
+.history/
+.direnv/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swo
+*~
+*.orig
+*.rej
+.DS_Store
+Thumbs.db
+.eslintcache
+.stylelintcache
+*.code-workspace
+.envrc
+.tool-versions
+
+# ============================================================================
+# Cursor & AI Tooling (keep .cursorignore itself)
+# ============================================================================
+.cursor/
+.claude/**/__pycache__/
+.claude/**/*.pyc
+.claude/hooks/logs/
+.claude/hooks/utils/tts/logs/
+.claude/agents/product-lead.md
+.claude/agents/product-manager.md
+.claude/agents/product-owner.md
+.claude/settings.local.json
+.agent-id
+
+# ============================================================================
+# Python Tooling Cache
+# ============================================================================
+.pytest_cache/
+.ruff_cache/
+.uv-cache/
+.uv-tools/
+.venv/
+
+# ============================================================================
+# Deployment & CI/CD
+# ============================================================================
+.vercel/
+.vercel
+.lighthouseci/
+.lighthouse-urls.tmp
+.playwright-mcp/
+
+# ============================================================================
+# Temporary & Backup Files
+# ============================================================================
+logs/
+tmp/
+.cache/
+.api-backup/
+public/images/**/.backup/
+*.backup
+distributed-test-config.yaml.backup
+
+# ============================================================================
+# Large Binary Files & Media
+# ============================================================================
+# Screenshots (keep structure, ignore content)
+screenshots/*.png
+screenshots/*.jpg
+screenshots/*.jpeg
+screenshots/*.gif
+screenshots/*.webp
+
+# Large image files in public (keep structure)
+public/images/**/*.jpeg
+public/images/**/*.jpg
+public/images/**/*.png
+public/images/**/*.gif
+public/images/**/*.webp
+public/images/**/*.svg
+!public/images/**/placeholder.svg
+
+# ============================================================================
+# Planning & Documentation Artifacts
+# ============================================================================
+.ai/plannings/
+CLI_TOOLS.md
+MCP-SERVERS.md
+
+# ============================================================================
+# Keep Important Files (Explicit Includes)
+# ============================================================================
+!.cursorignore
+!.gitignore
+!.env.example
+!.env.template
+!.env.local.example
+!public/images/**/placeholder.svg
