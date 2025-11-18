@@ -30,26 +30,26 @@ jest.mock('@/lib/config', () => ({
 jest.mock('@/config', () => ({
   blogConfig: {
     site: {
-      name: 'Plant Doctor Blog',
+      name: 'Plant Doctor News',
     },
   },
 }))
 
 jest.mock('@/config/footer', () => ({
   FOOTER_COPY: {
-    brandHeading: 'About Plant Doctor',
-    brandDescription: 'helps you grow.',
+    brandHeading: 'Plant Doctor News',
+    brandDescription: 'AI Plant Doctor | Identify Plants, Breeds & Diseases.',
     landingPageUrl: 'https://plantdoctor.app',
   },
 }))
 
 jest.mock('@/config/constants', () => ({
   BLOG_CONSTANTS: {
-    MORUK_URL: 'https://moruk.com',
+    MORUK_URL: 'https://moruk.ai',
     UMBRELLA_BRAND_NAME: 'Moruk',
-    ORGANIZATION_NAME: 'Moruk Labs',
+    ORGANIZATION_NAME: 'Plant Doctor',
     APPS: {
-      PLANT_DOCTOR: 'https://apps.apple.com/plant-doctor',
+      PLANT_DOCTOR: 'https://apps.apple.com/no/app/plant-doctor-ai-disease-id/id6748545235',
     },
   },
 }))
@@ -63,21 +63,21 @@ describe('Footer Organism', () => {
   describe('Footer Brand Section', () => {
     it('renders brand heading', () => {
       render(<Footer />)
-      expect(screen.getByText('About Plant Doctor')).toBeInTheDocument()
+      expect(screen.getByText('Plant Doctor News')).toBeInTheDocument()
     })
 
     it('renders brand description with links', () => {
       render(<Footer />)
-      expect(screen.getByText(/helps you grow/i)).toBeInTheDocument()
+      expect(screen.getByText(/AI Plant Doctor/i)).toBeInTheDocument()
       expect(screen.getByText('Plant Doctor')).toHaveAttribute('href', 'https://plantdoctor.app')
-      expect(screen.getByText('Moruk')).toHaveAttribute('href', 'https://moruk.com')
+      expect(screen.getByText('Moruk')).toHaveAttribute('href', 'https://moruk.ai')
     })
 
     it('renders App Store download button', () => {
       render(<Footer />)
       const downloadButton = screen.getByText('Download on App Store')
       expect(downloadButton).toBeInTheDocument()
-      expect(downloadButton).toHaveAttribute('href', 'https://apps.apple.com/plant-doctor')
+      expect(downloadButton).toHaveAttribute('href', 'https://apps.apple.com/no/app/plant-doctor-ai-disease-id/id6748545235')
       expect(downloadButton).toHaveClass('bg-primary')
     })
   })
@@ -140,12 +140,12 @@ describe('Footer Organism', () => {
 
     it('renders organization name in copyright', () => {
       render(<Footer />)
-      expect(screen.getByText(/Moruk Labs/)).toBeInTheDocument()
+      expect(screen.getByText(/© 2025 Plant Doctor/)).toBeInTheDocument()
     })
 
     it('renders site name in copyright', () => {
       render(<Footer />)
-      expect(screen.getByText(/Plant Doctor Blog/)).toBeInTheDocument()
+      expect(screen.getByText(/Plant Doctor News\./)).toBeInTheDocument()
     })
 
     it('applies border and spacing styles', () => {
