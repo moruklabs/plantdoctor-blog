@@ -66,7 +66,9 @@ describe('Canonical URLs for Content', () => {
 
       guides.forEach((guide) => {
         const canonical = guide.metadata.canonical
-        const expectedPattern = /^https:\/\/blog\.plantdoctor\.app\/guides\/.+/
+        const expectedPattern = new RegExp(
+          `^${BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/guides/.+`,
+        )
 
         if (!expectedPattern.test(canonical)) {
           invalidGuides.push({
@@ -86,7 +88,7 @@ describe('Canonical URLs for Content', () => {
       const guides = await getAllGuides()
 
       guides.forEach((guide) => {
-        expect(guide.metadata.canonical).toMatch(/^https:\/\/blog\.plantdoctor\.app\/guides\/.+$/)
+        expect(guide.metadata.canonical).toMatch(urlPattern('/guides/.+'))
         expect(guide.metadata.canonical).toBe(`${BASE_URL}/guides/${guide.metadata.slug}`)
       })
     })
@@ -102,7 +104,9 @@ describe('Canonical URLs for Content', () => {
 
       news.forEach((article) => {
         const canonical = article.metadata.canonical
-        const expectedPattern = /^https:\/\/blog\.plantdoctor\.app\/news\/.+/
+        const expectedPattern = new RegExp(
+          `^${BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/news/.+`,
+        )
 
         if (!expectedPattern.test(canonical)) {
           invalidNews.push({
@@ -124,7 +128,7 @@ describe('Canonical URLs for Content', () => {
       const news = await getAllNews()
 
       news.forEach((article) => {
-        expect(article.metadata.canonical).toMatch(/^https:\/\/blog\.plantdoctor\.app\/news\/.+$/)
+        expect(article.metadata.canonical).toMatch(urlPattern('/news/.+'))
         expect(article.metadata.canonical).toBe(`${BASE_URL}/news/${article.metadata.slug}`)
       })
     })

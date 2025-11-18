@@ -39,11 +39,12 @@ const eslintConfig = [
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
 
-      // React Hooks rules - disabled temporarily (Phase 10: fix and re-enable)
+      // React Hooks rules - downgraded to warnings (Phase 10: fix and re-enable as errors)
       // See VALIDATE-ANALYSIS.md for details on 113 errors introduced by react-hooks@7.0.1
-      'react-hooks/error-boundaries': 'off', // TODO: Fix JSX in try/catch blocks
-      'react-hooks/set-state-in-effect': 'off', // TODO: Fix table-of-contents.tsx
-      'react-hooks/refs': 'off', // TODO: Fix button.tsx ref handling
+      // Using 'warn' keeps technical debt visible while unblocking the build
+      'react-hooks/error-boundaries': 'warn', // TODO: Fix JSX in try/catch blocks
+      'react-hooks/set-state-in-effect': 'warn', // TODO: Fix table-of-contents.tsx
+      'react-hooks/refs': 'warn', // TODO: Fix button.tsx ref handling
 
       // Atomic Design enforcement - prevent imports from non-standard component folders
       'no-restricted-imports': [
