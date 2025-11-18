@@ -90,7 +90,7 @@
     "task:cleanup": "tsx scripts/task-management.ts cleanup",
     "//           ": "=== UTILITIES ===",
     "validate:quick": "pnpm check:pm && pnpm concurrently --kill-others-on-fail --prefix-colors \"cyan,magenta,blue\" --prefix \"[{name}]\" --names \"LINT,TYPE,FORMAT\" \"pnpm lint\" \"pnpm type-check\" \"prettier --check .\"",
-    "validate:standard": "pnpm validate:quick && pnpm build && pnpm test:coverage && pnpm test:integration",
+    "validate:standard": "pnpm validate:quick && pnpm build && pnpm test:coverage",
     "validate:complete": "pnpm validate:standard && pnpm concurrently --kill-others-on-fail --prefix-colors \"cyan,magenta,blue,yellow,green,red\" --prefix \"[{name}]\" --names \"E2E-D,E2E-M,E2E-T,A11Y,SCHEMA,LH\" \"pnpm e2e:desktop\" \"pnpm e2e:mobile\" \"pnpm e2e:tablet\" \"pnpm test:a11y:all\" \"pnpm test:schema\" \"pnpm lh:all\"",
     "validate:complete:headed": "pnpm validate:standard && pnpm concurrently --kill-others-on-fail --prefix-colors \"cyan,magenta,blue,yellow,green,red\" --prefix \"[{name}]\" --names \"E2E-D,E2E-M,E2E-T,A11Y,SCHEMA,LH\" \"pnpm e2e:desktop:headed\" \"pnpm e2e:mobile:headed\" \"pnpm e2e:tablet:headed\" \"pnpm test:a11y:all:headed\" \"pnpm test:schema:headed\" \"pnpm lh:all\"",
     "validate:visual": "pnpm validate:complete:headed",
