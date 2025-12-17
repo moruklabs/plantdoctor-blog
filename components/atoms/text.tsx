@@ -45,8 +45,7 @@ const textVariants = cva('', {
 })
 
 export interface TextProps
-  extends VariantProps<typeof textVariants>,
-    Omit<React.HTMLAttributes<HTMLElement>, 'className'> {
+  extends VariantProps<typeof textVariants>, Omit<React.HTMLAttributes<HTMLElement>, 'className'> {
   /**
    * Text style variant
    * - 'body': Standard paragraph text (default)

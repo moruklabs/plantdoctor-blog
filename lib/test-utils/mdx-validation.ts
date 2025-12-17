@@ -111,7 +111,7 @@ export function validateMDXFiles(config: MDXValidationConfig): void {
     // Meta description validation
     const hasMetaDescription = Boolean(
       (processed.frontmatter.description && processed.frontmatter.description.trim()) ||
-        (processed.frontmatter.meta_desc && processed.frontmatter.meta_desc.trim()),
+      (processed.frontmatter.meta_desc && processed.frontmatter.meta_desc.trim()),
     )
     expect(hasMetaDescription).toBe(true)
 
