@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getAllSlugsFromNewsDir, getNewsBySlug, getAllNews } from '@/lib/content/news'
 import { getBlogImage } from '@/lib/content/blog-images'
+import { ContentMetadata } from '@/lib/content/content-utils'
 import {
   formatPublishedLine,
   getPostOgImage,
@@ -111,6 +112,11 @@ export async function generateMetadata({
 export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
+  let metadata: ContentMetadata
+  let html: string
+  let relatedNews: Awaited<ReturnType<typeof getNewsBySlug>>[]
+  let newsArticleSchema: ReturnType<typeof createArticleSchema>
+
   try {
     const newsArticle = await getNewsBySlug(slug)
     const allNews = await getAllNews()
@@ -119,10 +125,10 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
     // 1. Prioritize news with matching tags
     const tagMatchedNews = allNews
       .filter((n) => n.metadata.slug !== slug)
-      .filter((n) => n.metadata.tags.some((tag) => newsArticle.metadata.tags.includes(tag)))
+      .filter((n) => n.metadata.tags.some((tag: string) => newsArticle.metadata.tags.includes(tag)))
 
     // 2. If fewer than 3, fill with most recent news (sorted by date)
-    let relatedNews = tagMatchedNews.slice(0, 3)
+    relatedNews = tagMatchedNews.slice(0, 3)
 
     if (relatedNews.length < 3) {
       const remainingNews = allNews
@@ -133,7 +139,9 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       relatedNews = [...relatedNews, ...remainingNews].slice(0, 3)
     }
 
-    const { metadata, html } = newsArticle
+    const articleData = newsArticle
+    metadata = articleData.metadata
+    html = articleData.html
 
     // Create NewsArticle schema
     const publisherSchema = createOrganizationSchema({
@@ -142,7 +150,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       logo: `${siteConfig.baseUrl}/favicon.svg`,
     })
 
-    const newsArticleSchema = createArticleSchema(
+    newsArticleSchema = createArticleSchema(
       {
         headline: metadata.title,
         description: metadata.description || metadata.meta_desc || '',
@@ -161,90 +169,90 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       },
       'NewsArticle',
     )
-
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'News', href: '/news' },
-            { label: metadata.title },
-          ]}
-        />
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <article className="lg:col-span-3">
-            {/* Hero Image */}
-            <section className="mb-8">
-              <div className="relative aspect-[1200/630] rounded-lg overflow-hidden">
-                <Image
-                  src={metadata.coverImage || metadata.ogImage || getBlogImage(slug).src}
-                  alt={metadata.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
-                  className="object-cover"
-                  priority
-                  fetchPriority="high"
-                />
-              </div>
-            </section>
-
-            {/* Title and Meta */}
-            <header className="mb-8">
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-4xl font-bold flex-1">
-                  <InternalLink
-                    href={metadata.canonical}
-                    className="text-foreground hover:text-primary transition-colors duration-200"
-                    aria-label={`Read full article: ${metadata.title}`}
-                  >
-                    {metadata.title}
-                  </InternalLink>
-                </h1>
-                <ReadingModeToggle />
-              </div>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {metadata.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <p className="text-muted-foreground">
-                {formatPublishedLine(metadata.date, metadata.readingTime ?? 0)}
-              </p>
-            </header>
-
-            {/* Article Content with Reading Mode Support */}
-            <ArticleContent html={html} className="mb-8" />
-
-            {/* Guide CTA */}
-            <section className="mb-8">
-              <ContentCTA tags={metadata.tags} />
-            </section>
-
-            {/* Share Buttons */}
-            <section className="mb-8">
-              <ShareButtons url={metadata.canonical} title={metadata.title} />
-            </section>
-
-            {/* Related News */}
-            <RelatedPosts posts={relatedNews} />
-          </article>
-
-          {/* Table of Contents */}
-          <aside className="lg:col-span-1">
-            <TableOfContents />
-          </aside>
-        </div>
-
-        {/* Structured Data */}
-        <StructuredDataScript data={newsArticleSchema as unknown as Record<string, unknown>} />
-        {metadata.structuredData && (
-          <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />
-        )}
-      </div>
-    )
   } catch {
     notFound()
   }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'News', href: '/news' },
+          { label: metadata.title },
+        ]}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <article className="lg:col-span-3">
+          {/* Hero Image */}
+          <section className="mb-8">
+            <div className="relative aspect-[1200/630] rounded-lg overflow-hidden">
+              <Image
+                src={metadata.coverImage || metadata.ogImage || getBlogImage(slug).src}
+                alt={metadata.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                className="object-cover"
+                priority
+                fetchPriority="high"
+              />
+            </div>
+          </section>
+
+          {/* Title and Meta */}
+          <header className="mb-8">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <h1 className="text-4xl font-bold flex-1">
+                <InternalLink
+                  href={metadata.canonical}
+                  className="text-foreground hover:text-primary transition-colors duration-200"
+                  aria-label={`Read full article: ${metadata.title}`}
+                >
+                  {metadata.title}
+                </InternalLink>
+              </h1>
+              <ReadingModeToggle />
+            </div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {metadata.tags.map((tag: string) => (
+                <Badge key={tag} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+            <p className="text-muted-foreground">
+              {formatPublishedLine(metadata.date, metadata.readingTime ?? 0)}
+            </p>
+          </header>
+
+          {/* Article Content with Reading Mode Support */}
+          <ArticleContent html={html} className="mb-8" />
+
+          {/* Guide CTA */}
+          <section className="mb-8">
+            <ContentCTA tags={metadata.tags} />
+          </section>
+
+          {/* Share Buttons */}
+          <section className="mb-8">
+            <ShareButtons url={metadata.canonical} title={metadata.title} />
+          </section>
+
+          {/* Related News */}
+          <RelatedPosts posts={relatedNews} />
+        </article>
+
+        {/* Table of Contents */}
+        <aside className="lg:col-span-1">
+          <TableOfContents />
+        </aside>
+      </div>
+
+      {/* Structured Data */}
+      <StructuredDataScript data={newsArticleSchema as unknown as Record<string, unknown>} />
+      {metadata.structuredData && (
+        <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />
+      )}
+    </div>
+  )
 }

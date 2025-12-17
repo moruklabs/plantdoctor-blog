@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getPostBySlug, getAllPosts } from '@/lib/content/posts'
 import { getBlogImage } from '@/lib/content/blog-images'
+import { ContentMetadata } from '@/lib/content/content-utils'
 import { pageMetadata } from '@/config/page-metadata'
 import {
   formatPublishedLine,
@@ -111,6 +112,11 @@ export async function generateMetadata({
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
+  let metadata: ContentMetadata
+  let html: string
+  let relatedPosts: Awaited<ReturnType<typeof getPostBySlug>>[]
+  let breadcrumbSchema: ReturnType<typeof createBreadcrumbList>
+
   try {
     const post = await getPostBySlug(slug)
     const allPosts = await getAllPosts()
@@ -119,10 +125,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     // 1. Prioritize posts with matching tags
     const tagMatchedPosts = allPosts
       .filter((p) => p.metadata.slug !== slug)
-      .filter((p) => p.metadata.tags.some((tag) => post.metadata.tags.includes(tag)))
+      .filter((p) => p.metadata.tags.some((tag: string) => post.metadata.tags.includes(tag)))
 
     // 2. If fewer than 3, fill with most recent posts (sorted by date)
-    let relatedPosts = tagMatchedPosts.slice(0, 3)
+    relatedPosts = tagMatchedPosts.slice(0, 3)
 
     if (relatedPosts.length < 3) {
       const remainingPosts = allPosts
@@ -135,10 +141,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       relatedPosts = [...relatedPosts, ...remainingPosts].slice(0, 3)
     }
 
-    const { metadata, html } = post
+    const postData = post
+    metadata = postData.metadata
+    html = postData.html
 
     // Create breadcrumb schema
-    const breadcrumbSchema = createBreadcrumbList([
+    breadcrumbSchema = createBreadcrumbList([
       {
         name: 'Home',
         item: siteConfig.baseUrl,
@@ -152,82 +160,82 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         item: metadata.canonical,
       },
     ])
-
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Tips', href: siteConfig.app.tips },
-            { label: metadata.title },
-          ]}
-        />
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <article className="lg:col-span-3">
-            {/* Hero Image */}
-            <section className="mb-8">
-              <div className="relative aspect-[1200/630] rounded-lg overflow-hidden">
-                <Image
-                  src={metadata.coverImage || metadata.ogImage || getBlogImage(slug).src}
-                  alt={metadata.altText || metadata.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
-                  className="object-cover"
-                  priority
-                  fetchPriority="high"
-                />
-              </div>
-            </section>
-
-            {/* Title and Meta */}
-            <header className="mb-8">
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-4xl font-bold flex-1">{metadata.title}</h1>
-                <ReadingModeToggle />
-              </div>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {metadata.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <p className="text-muted-foreground">
-                {formatPublishedLine(metadata.date, metadata.readingTime ?? 0)}
-              </p>
-            </header>
-
-            {/* Article Content with Reading Mode Support */}
-            <ArticleContent html={html} className="mb-8" />
-
-            {/* Guide CTA */}
-            <section className="mb-8">
-              <ContentCTA tags={metadata.tags} />
-            </section>
-
-            {/* Share Buttons */}
-            <section className="mb-8">
-              <ShareButtons url={metadata.canonical} title={metadata.title} />
-            </section>
-
-            {/* Related Posts */}
-            <RelatedPosts posts={relatedPosts} />
-          </article>
-
-          {/* Table of Contents */}
-          <aside className="lg:col-span-1">
-            <TableOfContents />
-          </aside>
-        </div>
-
-        {/* Structured Data */}
-        {metadata.structuredData && (
-          <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />
-        )}
-      </div>
-    )
   } catch {
     notFound()
   }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Tips', href: siteConfig.app.tips },
+          { label: metadata.title },
+        ]}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <article className="lg:col-span-3">
+          {/* Hero Image */}
+          <section className="mb-8">
+            <div className="relative aspect-[1200/630] rounded-lg overflow-hidden">
+              <Image
+                src={metadata.coverImage || metadata.ogImage || getBlogImage(slug).src}
+                alt={metadata.altText || metadata.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                className="object-cover"
+                priority
+                fetchPriority="high"
+              />
+            </div>
+          </section>
+
+          {/* Title and Meta */}
+          <header className="mb-8">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <h1 className="text-4xl font-bold flex-1">{metadata.title}</h1>
+              <ReadingModeToggle />
+            </div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {metadata.tags.map((tag: string) => (
+                <Badge key={tag} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+            <p className="text-muted-foreground">
+              {formatPublishedLine(metadata.date, metadata.readingTime ?? 0)}
+            </p>
+          </header>
+
+          {/* Article Content with Reading Mode Support */}
+          <ArticleContent html={html} className="mb-8" />
+
+          {/* Guide CTA */}
+          <section className="mb-8">
+            <ContentCTA tags={metadata.tags} />
+          </section>
+
+          {/* Share Buttons */}
+          <section className="mb-8">
+            <ShareButtons url={metadata.canonical} title={metadata.title} />
+          </section>
+
+          {/* Related Posts */}
+          <RelatedPosts posts={relatedPosts} />
+        </article>
+
+        {/* Table of Contents */}
+        <aside className="lg:col-span-1">
+          <TableOfContents />
+        </aside>
+      </div>
+
+      {/* Structured Data */}
+      {metadata.structuredData && (
+        <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />
+      )}
+    </div>
+  )
 }

@@ -112,12 +112,15 @@ export async function generateMetadata({
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
+  let guide: Awaited<ReturnType<typeof getGuideBySlug>>
+  let relatedPosts: Awaited<ReturnType<typeof getPostBySlug>>[]
+
   try {
-    const guide = await getGuideBySlug(slug)
+    guide = await getGuideBySlug(slug)
 
     // Get hardcoded related posts for this guide (exactly 6 curated posts)
     const relatedPostSlugs = getRelatedPostsForGuide(slug)
-    const relatedPosts = await Promise.all(
+    relatedPosts = await Promise.all(
       relatedPostSlugs.map(async (postSlug) => {
         try {
           return await getPostBySlug(postSlug)
@@ -127,82 +130,82 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         }
       }),
     ).then((posts) => posts.filter((post) => post !== null))
-
-    const { metadata, html } = guide
-
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Guides', href: '/guides' },
-            { label: metadata.title },
-          ]}
-        />
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <article className="lg:col-span-3">
-            {/* Hero Image */}
-            <section className="mb-8">
-              <div className="relative aspect-[1200/630] rounded-lg overflow-hidden">
-                <Image
-                  src={metadata.coverImage || metadata.ogImage || getBlogImage(slug).src}
-                  alt={metadata.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  fetchPriority="high"
-                />
-              </div>
-            </section>
-
-            {/* Title and Meta */}
-            <header className="mb-8">
-              <div className="inline-block mb-4">
-                <Badge variant="default" className="text-sm">
-                  Comprehensive Guide
-                </Badge>
-              </div>
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-4xl font-bold flex-1">{metadata.title}</h1>
-                <ReadingModeToggle />
-              </div>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {metadata.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <p className="text-muted-foreground">
-                {formatPublishedLine(metadata.date, metadata.readingTime ?? 0)}
-              </p>
-            </header>
-
-            {/* Article Content with Reading Mode Support */}
-            <ArticleContent html={html} className="mb-8" />
-
-            {/* Share Buttons */}
-            <section className="mb-8">
-              <ShareButtons url={metadata.canonical} title={metadata.title} />
-            </section>
-
-            {/* Related Posts - Hardcoded 6 most relevant blog posts */}
-            {relatedPosts.length > 0 && <RelatedPosts posts={relatedPosts} />}
-          </article>
-
-          {/* Table of Contents */}
-          <aside className="lg:col-span-1">
-            <TableOfContents />
-          </aside>
-        </div>
-
-        {/* Structured Data */}
-        {metadata.structuredData && (
-          <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />
-        )}
-      </div>
-    )
   } catch {
     notFound()
   }
+
+  const { metadata, html } = guide
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Guides', href: '/guides' },
+          { label: metadata.title },
+        ]}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <article className="lg:col-span-3">
+          {/* Hero Image */}
+          <section className="mb-8">
+            <div className="relative aspect-[1200/630] rounded-lg overflow-hidden">
+              <Image
+                src={metadata.coverImage || metadata.ogImage || getBlogImage(slug).src}
+                alt={metadata.title}
+                fill
+                className="object-cover"
+                priority
+                fetchPriority="high"
+              />
+            </div>
+          </section>
+
+          {/* Title and Meta */}
+          <header className="mb-8">
+            <div className="inline-block mb-4">
+              <Badge variant="default" className="text-sm">
+                Comprehensive Guide
+              </Badge>
+            </div>
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <h1 className="text-4xl font-bold flex-1">{metadata.title}</h1>
+              <ReadingModeToggle />
+            </div>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {metadata.tags.map((tag) => (
+                <Badge key={tag} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+            <p className="text-muted-foreground">
+              {formatPublishedLine(metadata.date, metadata.readingTime ?? 0)}
+            </p>
+          </header>
+
+          {/* Article Content with Reading Mode Support */}
+          <ArticleContent html={html} className="mb-8" />
+
+          {/* Share Buttons */}
+          <section className="mb-8">
+            <ShareButtons url={metadata.canonical} title={metadata.title} />
+          </section>
+
+          {/* Related Posts - Hardcoded 6 most relevant blog posts */}
+          {relatedPosts.length > 0 && <RelatedPosts posts={relatedPosts} />}
+        </article>
+
+        {/* Table of Contents */}
+        <aside className="lg:col-span-1">
+          <TableOfContents />
+        </aside>
+      </div>
+
+      {/* Structured Data */}
+      {metadata.structuredData && (
+        <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />
+      )}
+    </div>
+  )
 }
