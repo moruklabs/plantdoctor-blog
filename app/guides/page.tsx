@@ -7,6 +7,9 @@ import { Badge } from '@/components/atoms/badge'
 import { Heading, Text } from '@/components/atoms'
 import { guidesPageContent } from '@/content/pages/en'
 import { generatePageMetadata, formatDate, formatReadingTime } from '@/lib/content/meta-helpers'
+import { createBreadcrumbList } from '@/lib/seo/structured-data'
+import { StructuredDataScript } from '@/components/seo'
+import { siteConfig } from '@/lib/config'
 
 export const metadata: Metadata = generatePageMetadata(
   'Guides',
@@ -21,8 +24,14 @@ export const revalidate = false
 export default async function GuidesPage() {
   const allGuides = await getAllGuides()
 
+  const breadcrumbSchema = createBreadcrumbList([
+    { name: 'Home', item: siteConfig.baseUrl },
+    { name: 'Guides', item: `${siteConfig.baseUrl}/guides` },
+  ])
+
   return (
     <>
+      <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section className="text-center mb-12">

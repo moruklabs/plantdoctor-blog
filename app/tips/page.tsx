@@ -7,6 +7,9 @@ import { Badge } from '@/components/atoms/badge'
 import { Heading, Text } from '@/components/atoms'
 import { tipsPageContent } from '@/content/pages/en'
 import { generatePageMetadata, formatDate, formatReadingTime } from '@/lib/content/meta-helpers'
+import { createBreadcrumbList } from '@/lib/seo/structured-data'
+import { StructuredDataScript } from '@/components/seo'
+import { siteConfig } from '@/lib/config'
 
 export const metadata: Metadata = generatePageMetadata(
   'Blog Posts',
@@ -17,8 +20,14 @@ export const metadata: Metadata = generatePageMetadata(
 export default async function BlogPage() {
   const allPosts = await getAllPosts()
 
+  const breadcrumbSchema = createBreadcrumbList([
+    { name: 'Home', item: siteConfig.baseUrl },
+    { name: 'Tips', item: `${siteConfig.baseUrl}/tips` },
+  ])
+
   return (
     <>
+      <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section className="text-center mb-12">

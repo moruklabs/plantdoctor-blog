@@ -8,6 +8,8 @@ import { getBlogImage } from '@/lib/content/blog-images'
 import { Breadcrumbs } from '@/components/molecules/breadcrumbs'
 import { Badge } from '@/components/atoms/badge'
 import { StructuredDataScript } from '@/components/seo'
+import { createBreadcrumbList } from '@/lib/seo/structured-data'
+import { siteConfig } from '@/lib/config'
 import { ReadingModeToggle } from '@/components/molecules/reading-mode-toggle'
 import { ArticleContent } from '@/components/molecules/article-content'
 import nextDynamic from 'next/dynamic'
@@ -114,6 +116,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
   let guide: Awaited<ReturnType<typeof getGuideBySlug>>
   let relatedPosts: Awaited<ReturnType<typeof getPostBySlug>>[]
+  let breadcrumbSchema: ReturnType<typeof createBreadcrumbList>
 
   try {
     guide = await getGuideBySlug(slug)
@@ -130,6 +133,13 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         }
       }),
     ).then((posts) => posts.filter((post) => post !== null))
+
+    // Create breadcrumb schema for SEO
+    breadcrumbSchema = createBreadcrumbList([
+      { name: 'Home', item: siteConfig.baseUrl },
+      { name: 'Guides', item: `${siteConfig.baseUrl}/guides` },
+      { name: guide.metadata.title, item: guide.metadata.canonical },
+    ])
   } catch {
     notFound()
   }
@@ -138,6 +148,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
       <Breadcrumbs
         items={[
           { label: 'Home', href: '/' },
