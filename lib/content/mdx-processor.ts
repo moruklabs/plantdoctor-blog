@@ -88,6 +88,7 @@ export interface PostFrontmatter {
   meta_desc?: string
   tags: string[]
   date: string
+  dateModified?: string
   draft?: boolean
   canonical: string
   coverImage?: string
@@ -96,6 +97,7 @@ export interface PostFrontmatter {
   readingTime?: number
   lang?: string
   hero_prompt?: string
+  slug?: string
 }
 
 export interface ProcessedPost {

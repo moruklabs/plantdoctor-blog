@@ -36,8 +36,10 @@ tmp/
 # Image processing backups
 public/images/**/.backup/
 
-# Lighthouse & analysis
-.lighthouseci/
+# Lighthouse & analysis — track config, ignore reports
+.lighthouseci/*.json
+.lighthouseci/*.html
+.lighthouseci/lhr-*.gz
 .lighthouse-urls.tmp
 
 # TypeScript
