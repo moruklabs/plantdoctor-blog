@@ -9,7 +9,7 @@ import { getBlogImage } from '@/lib/content/blog-images'
 import { Badge } from '@/components/atoms/badge'
 import { Testimonials } from '@/components/organisms/testimonials'
 import { StructuredDataScript } from '@/components/seo'
-import { createBreadcrumbList, createOrganizationWithContactPoint, createWebSiteSchema } from '@/lib/seo/structured-data'
+import { createOrganizationWithContactPoint, createWebSiteSchema } from '@/lib/seo/structured-data'
 import { siteConfig } from '@/lib/config'
 import { blogConfig } from '@/config'
 import { featureToggles } from '@/lib/feature-toggles'
@@ -55,11 +55,6 @@ export default async function HomePage() {
     },
   })
 
-  // Create breadcrumb schema for homepage
-  const breadcrumbSchema = createBreadcrumbList([
-    { name: 'Home', item: siteConfig.baseUrl },
-  ])
-
   // Create WebSite schema with search action
   const websiteSchema = createWebSiteSchema({
     name: siteConfig.name,
@@ -79,7 +74,6 @@ export default async function HomePage() {
   return (
     <>
       {/* Structured Data for SEO */}
-      <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
       <StructuredDataScript data={organizationSchema as unknown as Record<string, unknown>} />
       <StructuredDataScript data={websiteSchema as unknown as Record<string, unknown>} />
 
