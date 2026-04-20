@@ -95,6 +95,7 @@ export function Footer() {
               { label: 'News', href: siteConfig.app.news },
               { label: 'Tips', href: siteConfig.app.tips },
               { label: 'Guides', href: siteConfig.app.guides },
+              { label: 'Blog & Resources', href: 'https://moruk.ai/apps/plantdoctor', external: true },
             ]}
           />
           <FooterSection
