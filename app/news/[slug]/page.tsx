@@ -16,7 +16,11 @@ import { ContentCTA } from '@/components/molecules/content-cta'
 import { StructuredDataScript } from '@/components/seo'
 import { ArticleContent } from '@/components/molecules/article-content'
 import { ReadingModeToggle } from '@/components/molecules/reading-mode-toggle'
-import { createArticleSchema, createBreadcrumbList, createOrganizationSchema } from '@/lib/seo/structured-data'
+import {
+  createArticleSchema,
+  createBreadcrumbList,
+  createOrganizationSchema,
+} from '@/lib/seo/structured-data'
 import { siteConfig } from '@/lib/config'
 import nextDynamic from 'next/dynamic'
 
