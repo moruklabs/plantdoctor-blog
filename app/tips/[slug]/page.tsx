@@ -5,11 +5,7 @@ import { getPostBySlug, getAllPosts } from '@/lib/content/posts'
 import { getBlogImage } from '@/lib/content/blog-images'
 import { ContentMetadata } from '@/lib/content/content-utils'
 import { pageMetadata } from '@/config/page-metadata'
-import {
-  formatPublishedLine,
-  getPostOgImage,
-  getSiteNameForOpenGraph,
-} from '@/lib/content/meta-helpers'
+import { formatPublishedLine, generateArticleMetadata } from '@/lib/content/meta-helpers'
 import { siteConfig } from '@/lib/config'
 import { Breadcrumbs } from '@/components/molecules/breadcrumbs'
 import { Badge } from '@/components/atoms/badge'
@@ -68,39 +64,7 @@ export async function generateMetadata({
 
   try {
     const post = await getPostBySlug(slug)
-    const { metadata } = post
-
-    return {
-      title: metadata.title,
-      description: metadata.meta_desc || metadata.description || '',
-      alternates: {
-        canonical: metadata.canonical,
-      },
-      openGraph: {
-        title: metadata.title,
-        description: metadata.meta_desc || metadata.description || '',
-        url: metadata.canonical,
-        siteName: getSiteNameForOpenGraph(),
-        images: [
-          {
-            url: getPostOgImage(metadata, slug),
-            width: 1200,
-            height: 630,
-            alt: metadata.title,
-          },
-        ],
-        locale: metadata.lang || 'en',
-        type: 'article',
-        publishedTime: metadata.date,
-        tags: metadata.tags,
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: metadata.title,
-        description: metadata.meta_desc || metadata.description || '',
-        images: [getPostOgImage(metadata, slug)],
-      },
-    }
+    return generateArticleMetadata(post, slug)
   } catch {
     return {
       title: pageMetadata.postNotFound.title,

@@ -16,6 +16,7 @@
 import fs from 'fs'
 import path from 'path'
 import { processMDX, validateFrontmatter, type PostFrontmatter } from './mdx-processor'
+import { getBlogImage } from './blog-images'
 import { blogConfig } from '@/config'
 
 /**
@@ -138,11 +139,13 @@ export function isWithinBuildWindow(dateString: string): boolean {
  *
  * @param config - Content type configuration
  * @param frontmatter - Validated frontmatter
+ * @param slug - Optional content slug used for image fallback
  * @returns Structured data object for SEO
  */
 export function createStructuredData(
   config: ContentTypeConfig,
   frontmatter: PostFrontmatter,
+  slug?: string,
 ): Record<string, unknown> {
   // Create Person schema for author (improves E-E-A-T signals for Google)
   const authorSchema = {
@@ -153,15 +156,33 @@ export function createStructuredData(
     sameAs: [blogConfig.author.social?.twitter, blogConfig.author.social?.linkedin].filter(Boolean),
   }
 
-  const articleUrl = frontmatter.canonical || `${blogConfig.site.url}/${config.pathPrefix}/${frontmatter.slug || ''}`
+  const articleUrl =
+    frontmatter.canonical ||
+    `${blogConfig.site.url}/${config.pathPrefix}/${frontmatter.slug || slug || ''}`
 
-  const baseSchema = {
+  // Resolve image URL: prefer explicit fields, fall back to auto-generated placeholder
+  const imageUrl =
+    frontmatter.coverImage ||
+    frontmatter.ogImage ||
+    (slug && slug.trim() ? getBlogImage(slug).src : undefined)
+
+  const imageSchema = imageUrl
+    ? {
+        '@type': 'ImageObject',
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+      }
+    : undefined
+
+  const baseSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': config.schemaType,
     headline: frontmatter.title,
-    description: frontmatter.meta_desc,
+    description: frontmatter.meta_desc || frontmatter.description || '',
     datePublished: frontmatter.date,
     dateModified: frontmatter.dateModified || frontmatter.date,
+    url: articleUrl,
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': articleUrl,
@@ -175,6 +196,14 @@ export function createStructuredData(
         url: blogConfig.site.url + '/favicon.svg',
       },
     },
+  }
+
+  if (imageSchema) {
+    baseSchema.image = imageSchema
+  }
+
+  if (frontmatter.tags?.length) {
+    baseSchema.keywords = frontmatter.tags.join(', ')
   }
 
   // Merge with any additional schema properties
@@ -220,7 +249,7 @@ export async function getContentBySlug<T extends ContentMetadata = ContentMetada
   // Create structured data for SEO
   const structuredData = customStructuredData
     ? await customStructuredData(validatedFrontmatter, slug)
-    : createStructuredData(config, validatedFrontmatter)
+    : createStructuredData(config, validatedFrontmatter, slug)
 
   return {
     metadata: {
