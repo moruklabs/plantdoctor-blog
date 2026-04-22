@@ -161,10 +161,16 @@ export function createStructuredData(
     `${blogConfig.site.url}/${config.pathPrefix}/${frontmatter.slug || slug || ''}`
 
   // Resolve image URL: prefer explicit fields, fall back to auto-generated placeholder
-  const imageUrl =
+  const rawImageUrl =
     frontmatter.coverImage ||
     frontmatter.ogImage ||
     (slug && slug.trim() ? getBlogImage(slug).src : undefined)
+
+  // Normalize to absolute URL so JSON-LD image.url is valid for rich results
+  const imageUrl =
+    rawImageUrl && rawImageUrl.startsWith('/')
+      ? `${blogConfig.site.url}${rawImageUrl}`
+      : rawImageUrl
 
   const imageSchema = imageUrl
     ? {
