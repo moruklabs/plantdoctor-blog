@@ -16,7 +16,11 @@ import { ContentCTA } from '@/components/molecules/content-cta'
 import { StructuredDataScript } from '@/components/seo'
 import { ArticleContent } from '@/components/molecules/article-content'
 import { ReadingModeToggle } from '@/components/molecules/reading-mode-toggle'
-import { createArticleSchema, createOrganizationSchema } from '@/lib/seo/structured-data'
+import {
+  createArticleSchema,
+  createBreadcrumbList,
+  createOrganizationSchema,
+} from '@/lib/seo/structured-data'
 import { siteConfig } from '@/lib/config'
 import nextDynamic from 'next/dynamic'
 
@@ -116,6 +120,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
   let html: string
   let relatedNews: Awaited<ReturnType<typeof getNewsBySlug>>[]
   let newsArticleSchema: ReturnType<typeof createArticleSchema>
+  let breadcrumbSchema: ReturnType<typeof createBreadcrumbList>
 
   try {
     const newsArticle = await getNewsBySlug(slug)
@@ -169,6 +174,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       },
       'NewsArticle',
     )
+
+    // Create breadcrumb schema for SEO
+    breadcrumbSchema = createBreadcrumbList([
+      { name: 'Home', item: siteConfig.baseUrl },
+      { name: 'News', item: `${siteConfig.baseUrl}/news` },
+      { name: metadata.title, item: metadata.canonical },
+    ])
   } catch {
     notFound()
   }
@@ -249,6 +261,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       </div>
 
       {/* Structured Data */}
+      <StructuredDataScript data={breadcrumbSchema as unknown as Record<string, unknown>} />
       <StructuredDataScript data={newsArticleSchema as unknown as Record<string, unknown>} />
       {metadata.structuredData && (
         <StructuredDataScript data={metadata.structuredData as Record<string, unknown>} />

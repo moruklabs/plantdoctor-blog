@@ -144,13 +144,17 @@ export function createStructuredData(
   config: ContentTypeConfig,
   frontmatter: PostFrontmatter,
 ): Record<string, unknown> {
-  // Create Person schema for author (improves E-A-T signals for Google)
+  // Create Person schema for author (improves E-E-A-T signals for Google)
   const authorSchema = {
     '@type': 'Person',
-    name: blogConfig.site.name,
-    // Optional: Add author URL when author profile pages are implemented
-    // url: `${blogConfig.site.url}/authors/${authorHandle}`,
+    name: blogConfig.author.name,
+    url: blogConfig.author.url,
+    description: 'Plant care specialist and garden writer',
+    sameAs: [blogConfig.author.social?.twitter, blogConfig.author.social?.linkedin].filter(Boolean),
   }
+
+  const articleUrl =
+    frontmatter.canonical || `${blogConfig.site.url}/${config.pathPrefix}/${frontmatter.slug || ''}`
 
   const baseSchema = {
     '@context': 'https://schema.org',
@@ -158,6 +162,11 @@ export function createStructuredData(
     headline: frontmatter.title,
     description: frontmatter.meta_desc,
     datePublished: frontmatter.date,
+    dateModified: frontmatter.dateModified || frontmatter.date,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': articleUrl,
+    },
     author: authorSchema,
     publisher: {
       '@type': 'Organization',

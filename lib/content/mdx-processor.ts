@@ -85,9 +85,15 @@ try {
 }
 
 const OWN_PROPERTY_HOSTS = new Set([
-  'plantdoctor.app', 'blog.plantdoctor.app',
-  'moruk.ai', 'moruk.link', 'moruk.app', 'moruk.dev',
-  'apps.apple.com', 'itunes.apple.com', 'play.google.com',
+  'plantdoctor.app',
+  'blog.plantdoctor.app',
+  'moruk.ai',
+  'moruk.link',
+  'moruk.app',
+  'moruk.dev',
+  'apps.apple.com',
+  'itunes.apple.com',
+  'play.google.com',
   ...loadProductionDomains(),
 ])
 
@@ -96,7 +102,7 @@ function loadProductionDomains(): string[] {
     const mappingPath = path.resolve(process.cwd(), '../../APPS_MAPPING.md')
     const raw = fs.readFileSync(mappingPath, 'utf8')
     const matches = raw.match(/→\s*https?:\/\/([^\s\n/]+)/g) ?? []
-    return matches.map(m => m.replace(/→\s*https?:\/\//, '').trim())
+    return matches.map((m) => m.replace(/→\s*https?:\/\//, '').trim())
   } catch {
     return []
   }
@@ -105,7 +111,7 @@ function loadProductionDomains(): string[] {
 function isOwnProperty(href: string): boolean {
   try {
     const { hostname } = new URL(href)
-    return [...OWN_PROPERTY_HOSTS].some(h => hostname === h || hostname.endsWith(`.${h}`))
+    return [...OWN_PROPERTY_HOSTS].some((h) => hostname === h || hostname.endsWith(`.${h}`))
   } catch {
     return false
   }
@@ -128,6 +134,7 @@ export interface PostFrontmatter {
   meta_desc?: string
   tags: string[]
   date: string
+  dateModified?: string
   draft?: boolean
   canonical: string
   coverImage?: string
@@ -136,6 +143,7 @@ export interface PostFrontmatter {
   readingTime?: number
   lang?: string
   hero_prompt?: string
+  slug?: string
 }
 
 export interface ProcessedPost {
