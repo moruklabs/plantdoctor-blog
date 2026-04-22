@@ -95,7 +95,7 @@ export function Footer() {
               { label: 'News', href: siteConfig.app.news },
               { label: 'Tips', href: siteConfig.app.tips },
               { label: 'Guides', href: siteConfig.app.guides },
-              { label: 'Blog & Resources', href: 'https://moruk.ai/apps/plantdoctor', external: true },
+              { label: 'Community', href: '/community' },
             ]}
           />
           <FooterSection
@@ -108,6 +108,27 @@ export function Footer() {
             ]}
           />
         </div>
+
+        {/* Cross-app backlinks for SEO */}
+        <div className="border-t mt-8 pt-8">
+          <h4 className="font-semibold mb-4 text-sm">More from Moruk</h4>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            {[
+              { label: 'plantdoctor.app', href: 'https://plantdoctor.app' },
+              { label: 'Cat Doctor', href: 'https://catdoctor.app' },
+              { label: 'Rizzman AI', href: 'https://rizzman.ai' },
+              { label: 'Atomic Habit', href: 'https://atomichabit.app' },
+              { label: 'Moruk AI', href: 'https://moruk.ai' },
+            ].map((app) => (
+              <li key={app.href}>
+                <ExternalLink href={app.href} className="hover:text-primary transition-colors">
+                  {app.label}
+                </ExternalLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <FooterBottom />
       </div>
     </footer>

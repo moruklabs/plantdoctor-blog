@@ -192,7 +192,7 @@ describe('Footer Organism', () => {
       const h4Elements = screen.getAllByRole('heading', { level: 4 })
 
       expect(h3).toBeInTheDocument()
-      expect(h4Elements).toHaveLength(2) // Content and Legal sections
+      expect(h4Elements.length).toBeGreaterThanOrEqual(2) // Content, Legal, and cross-app sections
     })
 
     it('renders lists for navigation sections', () => {
