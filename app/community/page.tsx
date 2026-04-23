@@ -13,11 +13,14 @@ export const metadata: Metadata = generatePageMetadata(
 
 export default function CommunityPage() {
   return (
-    <>
+    <main id="main">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <div className="text-6xl mb-6">🌿</div>
+          {/* Decorative emoji — hidden from assistive technology */}
+          <span aria-hidden="true" className="text-6xl mb-6 block">
+            🌿
+          </span>
           <Heading level={1} className="text-4xl md:text-5xl mb-6">
             Join the Plant Doctor Community
           </Heading>
@@ -28,13 +31,15 @@ export default function CommunityPage() {
         </div>
 
         {/* Ways to contribute */}
-        <section className="mb-16">
-          <Heading level={2} className="mb-8 text-center">
+        <section aria-labelledby="get-involved-heading" className="mb-16">
+          <Heading level={2} id="get-involved-heading" className="mb-8 text-center">
             Get Involved
           </Heading>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-card rounded-xl p-6 shadow-lg border">
-              <div className="text-3xl mb-4">⭐</div>
+            <article className="bg-card rounded-xl p-6 shadow-lg border">
+              <span aria-hidden="true" className="text-3xl mb-4 block">
+                ⭐
+              </span>
               <Heading level={3} className="text-xl mb-3">
                 Review Plant Doctor
               </Heading>
@@ -48,10 +53,12 @@ export default function CommunityPage() {
               >
                 Review on App Store
               </ExternalLink>
-            </div>
+            </article>
 
-            <div className="bg-card rounded-xl p-6 shadow-lg border">
-              <div className="text-3xl mb-4">✍️</div>
+            <article className="bg-card rounded-xl p-6 shadow-lg border">
+              <span aria-hidden="true" className="text-3xl mb-4 block">
+                ✍️
+              </span>
               <Heading level={3} className="text-xl mb-3">
                 Suggest Content
               </Heading>
@@ -65,10 +72,12 @@ export default function CommunityPage() {
               >
                 Suggest a Topic
               </a>
-            </div>
+            </article>
 
-            <div className="bg-card rounded-xl p-6 shadow-lg border">
-              <div className="text-3xl mb-4">🌱</div>
+            <article className="bg-card rounded-xl p-6 shadow-lg border">
+              <span aria-hidden="true" className="text-3xl mb-4 block">
+                🌱
+              </span>
               <Heading level={3} className="text-xl mb-3">
                 Share Your Plant Journey
               </Heading>
@@ -82,10 +91,12 @@ export default function CommunityPage() {
               >
                 Share Your Story
               </a>
-            </div>
+            </article>
 
-            <div className="bg-card rounded-xl p-6 shadow-lg border">
-              <div className="text-3xl mb-4">📧</div>
+            <article className="bg-card rounded-xl p-6 shadow-lg border">
+              <span aria-hidden="true" className="text-3xl mb-4 block">
+                📧
+              </span>
               <Heading level={3} className="text-xl mb-3">
                 Contact the Team
               </Heading>
@@ -99,13 +110,16 @@ export default function CommunityPage() {
               >
                 Get in Touch
               </a>
-            </div>
+            </article>
           </div>
         </section>
 
         {/* Call to Action */}
-        <section className="text-center bg-primary text-primary-foreground rounded-2xl p-12">
-          <Heading level={2} className="mb-6">
+        <section
+          aria-labelledby="cta-heading"
+          className="text-center bg-primary text-primary-foreground rounded-2xl p-12"
+        >
+          <Heading level={2} id="cta-heading" className="mb-6">
             Ready to Grow Together?
           </Heading>
           <Text className="text-lg mb-8 opacity-90">
@@ -128,6 +142,6 @@ export default function CommunityPage() {
           </div>
         </section>
       </div>
-    </>
+    </main>
   )
 }

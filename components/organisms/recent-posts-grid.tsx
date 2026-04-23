@@ -49,7 +49,7 @@ export function RecentPostsGrid({ posts }: RecentPostsGridProps) {
                   {post.metadata.description}
                 </Text>
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{new Date(post.metadata.date).toLocaleDateString()}</span>
+                  <span>{new Date(post.metadata.date).toLocaleDateString('en-US')}</span>
                   <span>{post.metadata.readingTime} min read</span>
                 </div>
               </CardContent>

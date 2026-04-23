@@ -227,15 +227,25 @@ export function generatePageMetadata(
 export function generateArticleMetadata(post: { metadata: PostMetadata }, slug: string): Metadata {
   const { metadata } = post
   const fullTitle = `${metadata.title} | ${blogConfig.site.name}`
-  const canonical = getCanonicalUrl(`/tips/${slug}`)
+  // Prefer per-post canonical from frontmatter; fall back to slug-derived URL
+  const canonical = metadata.canonical || getCanonicalUrl(`/tips/${slug}`)
   const ogImage = getPostOgImage(metadata, slug)
-  const description = metadata.description || metadata.meta_desc || ''
+  // Prefer meta_desc (SEO-specific field) over description (general field)
+  const description = metadata.meta_desc || metadata.description || ''
+  // Only use post tags when non-empty; otherwise fall back to site-wide keywords
+  const keywords =
+    Array.isArray(metadata.tags) && metadata.tags.length > 0
+      ? metadata.tags
+      : blogConfig.seo.keywords
+  // twitterHandle may be stored as a full URL in some configs — extract handle or omit
+  const rawHandle = blogConfig.seo.twitterHandle
+  const twitterCreator = rawHandle && !rawHandle.startsWith('http') ? `@${rawHandle}` : undefined
 
   return {
     title: fullTitle,
     description,
     authors: [{ name: blogConfig.author.name }],
-    keywords: metadata.tags || blogConfig.seo.keywords,
+    keywords,
     alternates: {
       canonical,
     },
@@ -262,7 +272,7 @@ export function generateArticleMetadata(post: { metadata: PostMetadata }, slug: 
       title: metadata.title,
       description,
       images: [ogImage],
-      creator: `@${blogConfig.seo.twitterHandle}`,
+      ...(twitterCreator ? { creator: twitterCreator } : {}),
     },
   }
 }
@@ -279,6 +289,9 @@ export function generateGuideMetadata(guide: { metadata: GuideMetadata }, slug: 
   const canonical = getCanonicalUrl(`/guides/${slug}`)
   const ogImage = getGuideOgImage(metadata, slug)
   const description = metadata.description || metadata.meta_desc || ''
+  const rawGuideHandle = blogConfig.seo.twitterHandle
+  const guideTwitterCreator =
+    rawGuideHandle && !rawGuideHandle.startsWith('http') ? `@${rawGuideHandle}` : undefined
 
   return {
     title: fullTitle,
@@ -311,7 +324,7 @@ export function generateGuideMetadata(guide: { metadata: GuideMetadata }, slug: 
       title: metadata.title,
       description,
       images: [ogImage],
-      creator: `@${blogConfig.seo.twitterHandle}`,
+      ...(guideTwitterCreator ? { creator: guideTwitterCreator } : {}),
     },
   }
 }

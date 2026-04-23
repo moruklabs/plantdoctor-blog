@@ -15,7 +15,10 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'via.placeholder.com' },
+    ],
     formats: ['image/webp', 'image/avif'],
     // Only disable optimization for static exports (required for CI/Lighthouse)
     // Enable optimization for normal deployments for better performance

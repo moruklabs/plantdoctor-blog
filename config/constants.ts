@@ -112,7 +112,7 @@ export const BLOG_CONSTANTS = {
     TEXT_PRO: 'https://apps.apple.com/no/app/textpro-ai-word-char-counter/id6748658370',
     RIZZMAN: 'https://apps.apple.com/no/app/rizzman-ai-dating-assistant/id6747261524',
     MINDAY: 'https://apps.apple.com/no/app/minday-daily-mindfulness/id6748837227',
-    PLANT_DOCTOR: 'https://apps.apple.com/no/app/plant-doctor-ai-disease-id/id6748545235',
+    PLANT_DOCTOR: 'https://moruk.link/plantdoctor/app-store',
   } as const,
   // Web portfolio landing pages
   PORTFOLIO: {

@@ -1,5 +1,3 @@
-'use client'
-
 import { isExternalUrl, isSubdomainUrl } from '@/lib/config'
 
 interface ExternalLinkProps {

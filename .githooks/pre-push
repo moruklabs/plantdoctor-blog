@@ -20,6 +20,13 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}🚀 Running pre-push validation...${NC}"
 echo ""
 
+# Detect non-interactive environment (CI, automated push, pipe)
+if [[ ! -t 0 ]] || [[ "${CI:-}" == "true" ]] || [[ "${GITHUB_ACTIONS:-}" == "true" ]]; then
+    NON_INTERACTIVE=true
+else
+    NON_INTERACTIVE=false
+fi
+
 # Function to run command with nice output
 run_check() {
     local name=$1
@@ -56,9 +63,13 @@ if ! run_check "Unit tests with coverage" "pnpm test:coverage"; then
     echo -e "${YELLOW}⚠️  Coverage thresholds not met. Check coverage report for details.${NC}"
     echo -e "${YELLOW}   Run 'pnpm coverage:report' to see detailed coverage${NC}"
 
+    if [[ "$NON_INTERACTIVE" == "true" ]]; then
+        exit 1
+    fi
+
     # Ask if they want to push anyway
     echo -e "${YELLOW}Do you want to push anyway? (y/N):${NC}"
-    read -r response
+    read -r response || true
     if [[ ! "$response" =~ ^[Yy]$ ]]; then
         exit 1
     fi
@@ -66,29 +77,37 @@ fi
 
 # Optional: Run E2E tests (can be slow, so make it optional)
 echo -e "${BLUE}=== Optional: E2E Tests ===${NC}"
-echo -e "${CYAN}Run E2E tests before pushing? This will test on all viewports. (y/N):${NC}"
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
-    if ! run_check "E2E tests (all viewports)" "pnpm test:viewports"; then
-        echo -e "${YELLOW}⚠️  E2E tests failed. Check the output above.${NC}"
-        echo -e "${YELLOW}Push anyway? (y/N):${NC}"
-        read -r response
-        if [[ ! "$response" =~ ^[Yy]$ ]]; then
-            exit 1
+if [[ "$NON_INTERACTIVE" == "true" ]]; then
+    echo -e "${CYAN}Non-interactive mode: skipping optional E2E tests${NC}"
+else
+    echo -e "${CYAN}Run E2E tests before pushing? This will test on all viewports. (y/N):${NC}"
+    read -r response || true
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        if ! run_check "E2E tests (all viewports)" "pnpm test:viewports"; then
+            echo -e "${YELLOW}⚠️  E2E tests failed. Check the output above.${NC}"
+            echo -e "${YELLOW}Push anyway? (y/N):${NC}"
+            read -r response || true
+            if [[ ! "$response" =~ ^[Yy]$ ]]; then
+                exit 1
+            fi
         fi
     fi
 fi
 
 # Optional: Run accessibility tests
-echo -e "${CYAN}Run accessibility tests? (y/N):${NC}"
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
-    if ! run_check "Accessibility tests" "pnpm test:a11y:all"; then
-        echo -e "${YELLOW}⚠️  Accessibility tests failed. Check the output above.${NC}"
-        echo -e "${YELLOW}Push anyway? (y/N):${NC}"
-        read -r response
-        if [[ ! "$response" =~ ^[Yy]$ ]]; then
-            exit 1
+if [[ "$NON_INTERACTIVE" == "true" ]]; then
+    echo -e "${CYAN}Non-interactive mode: skipping optional accessibility tests${NC}"
+else
+    echo -e "${CYAN}Run accessibility tests? (y/N):${NC}"
+    read -r response || true
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        if ! run_check "Accessibility tests" "pnpm test:a11y:all"; then
+            echo -e "${YELLOW}⚠️  Accessibility tests failed. Check the output above.${NC}"
+            echo -e "${YELLOW}Push anyway? (y/N):${NC}"
+            read -r response || true
+            if [[ ! "$response" =~ ^[Yy]$ ]]; then
+                exit 1
+            fi
         fi
     fi
 fi

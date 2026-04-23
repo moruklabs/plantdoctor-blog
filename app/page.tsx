@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { getAllPosts, getUrlForPost } from '@/lib/content/posts'
 import { getAllNews, getUrlForNews } from '@/lib/content/news'
 import { getAllGuides, getUrlForGuide } from '@/lib/content/guides'
-import { getAllApps, getUrlForApp } from '@/lib/content/apps'
 import { getBlogImage } from '@/lib/content/blog-images'
 import { Badge } from '@/components/atoms/badge'
 import { Testimonials } from '@/components/organisms/testimonials'
@@ -30,10 +29,6 @@ export default async function HomePage() {
   const allNews = await getAllNews()
   const featuredNews = allNews[0]
   const recentNews = allNews.slice(1, 7) // Get 6 news articles for grid
-
-  // Apps portfolio
-  const allApps = await getAllApps()
-  const featuredApps = allApps.slice(0, 3) // Get 3 apps for portfolio showcase
 
   // Tips (blog posts)
   const allPosts = featureToggles.tips.enabled ? await getAllPosts() : []
@@ -223,118 +218,6 @@ export default async function HomePage() {
                           {blogConfig.formatting.readingTime.suffixShort}
                         </span>
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Apps Portfolio Showcase */}
-      {featuredApps.length > 0 && (
-        <section className="py-16 bg-gradient-to-b from-background to-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              {/* Section Header */}
-              <div className="text-center mb-12">
-                <div className="text-5xl mb-4">🚀</div>
-                <Heading level={2} className="text-3xl md:text-4xl mb-4">
-                  Featured Apps & Projects
-                </Heading>
-                <Text className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-                  Explore our portfolio of AI-powered applications and productivity tools designed
-                  to enhance your digital life.
-                </Text>
-                <Link
-                  href="/apps"
-                  className="inline-flex items-center text-primary hover:underline font-medium"
-                >
-                  View All Apps →
-                </Link>
-              </div>
-
-              {/* Apps Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {featuredApps.map((app) => (
-                  <article
-                    key={app.metadata.slug}
-                    className="group bg-card rounded-xl overflow-hidden shadow-sm border hover:shadow-xl transition-all duration-300"
-                  >
-                    {/* App Image */}
-                    <Link
-                      href={getUrlForApp(app.metadata.slug)}
-                      className="block relative aspect-[16/9] overflow-hidden bg-muted"
-                    >
-                      <Image
-                        src={app.metadata.coverImage || OG_IMAGE_DEFAULT.url}
-                        alt={app.metadata.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                      {/* Status Badge */}
-                      {app.metadata.status === 'live' && (
-                        <div className="absolute top-3 right-3">
-                          <Badge
-                            variant="default"
-                            className="bg-green-600 text-white shadow-lg backdrop-blur-sm"
-                          >
-                            ✓ Live
-                          </Badge>
-                        </div>
-                      )}
-                    </Link>
-
-                    {/* App Content */}
-                    <div className="p-6">
-                      {/* Category */}
-                      <Badge variant="secondary" className="text-xs mb-3">
-                        {app.metadata.category}
-                      </Badge>
-
-                      {/* Title */}
-                      <Heading level={3} className="text-xl mb-2">
-                        <Link
-                          href={getUrlForApp(app.metadata.slug)}
-                          className="hover:text-primary transition-colors"
-                        >
-                          {app.metadata.title}
-                        </Link>
-                      </Heading>
-
-                      {/* Description */}
-                      <Text className="text-muted-foreground mb-4 line-clamp-2 text-sm">
-                        {app.metadata.description}
-                      </Text>
-
-                      {/* Technologies */}
-                      {app.metadata.technologies && app.metadata.technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {app.metadata.technologies.slice(0, 3).map((tech) => (
-                            <span
-                              key={tech}
-                              className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                          {app.metadata.technologies.length > 3 && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground">
-                              +{app.metadata.technologies.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      )}
-
-                      {/* CTA */}
-                      <Link
-                        href={getUrlForApp(app.metadata.slug)}
-                        className="inline-flex items-center text-sm font-medium text-primary hover:underline"
-                      >
-                        Learn More →
-                      </Link>
                     </div>
                   </article>
                 ))}
