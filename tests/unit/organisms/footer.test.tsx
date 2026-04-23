@@ -49,7 +49,7 @@ jest.mock('@/config/constants', () => ({
     UMBRELLA_BRAND_NAME: 'Moruk',
     ORGANIZATION_NAME: 'Plant Doctor',
     APPS: {
-      PLANT_DOCTOR: 'https://apps.apple.com/no/app/plant-doctor-ai-disease-id/id6748545235',
+      PLANT_DOCTOR: 'https://moruk.link/plantdoctor/app-store',
     },
   },
 }))
@@ -77,10 +77,7 @@ describe('Footer Organism', () => {
       render(<Footer />)
       const downloadButton = screen.getByText('Download on App Store')
       expect(downloadButton).toBeInTheDocument()
-      expect(downloadButton).toHaveAttribute(
-        'href',
-        'https://apps.apple.com/no/app/plant-doctor-ai-disease-id/id6748545235',
-      )
+      expect(downloadButton).toHaveAttribute('href', 'https://moruk.link/plantdoctor/app-store')
       expect(downloadButton).toHaveClass('bg-primary')
     })
   })
@@ -167,8 +164,8 @@ describe('Footer Organism', () => {
 
     it('renders with 3-column grid layout', () => {
       render(<Footer />)
-      // Check that the grid container exists with grid-cols-3
-      const gridContainer = screen.getByRole('contentinfo').querySelector('.grid-cols-3')
+      // Check that the responsive grid container exists
+      const gridContainer = screen.getByRole('contentinfo').querySelector('.md\\:grid-cols-3')
       expect(gridContainer).toBeInTheDocument()
     })
 
