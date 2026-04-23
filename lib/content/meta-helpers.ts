@@ -289,6 +289,9 @@ export function generateGuideMetadata(guide: { metadata: GuideMetadata }, slug: 
   const canonical = getCanonicalUrl(`/guides/${slug}`)
   const ogImage = getGuideOgImage(metadata, slug)
   const description = metadata.description || metadata.meta_desc || ''
+  const rawGuideHandle = blogConfig.seo.twitterHandle
+  const guideTwitterCreator =
+    rawGuideHandle && !rawGuideHandle.startsWith('http') ? `@${rawGuideHandle}` : undefined
 
   return {
     title: fullTitle,
@@ -321,7 +324,7 @@ export function generateGuideMetadata(guide: { metadata: GuideMetadata }, slug: 
       title: metadata.title,
       description,
       images: [ogImage],
-      creator: `@${blogConfig.seo.twitterHandle}`,
+      ...(guideTwitterCreator ? { creator: guideTwitterCreator } : {}),
     },
   }
 }
