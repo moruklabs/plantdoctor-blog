@@ -197,7 +197,9 @@ test.describe('Accessibility Tests - Interactive Elements', () => {
       const ariaHidden = await svg.getAttribute('aria-hidden')
       // If the parent has text, the SVG should be aria-hidden
       const parent = await svg.evaluateHandle((el) => el.parentElement)
-      const parentText = await parent.evaluate((el: Element) => el?.textContent?.trim() ?? '')
+      const parentText = await parent.evaluate(
+        (el: HTMLElement | null) => el?.textContent?.trim() ?? '',
+      )
       if (parentText.length > 0) {
         expect(ariaHidden).toBe('true')
       }
