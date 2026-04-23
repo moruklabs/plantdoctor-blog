@@ -2,6 +2,8 @@ import matter from 'gray-matter'
 import yaml from 'js-yaml'
 import { marked } from 'marked'
 import { generateCalloutHtml } from './callout-config'
+import path from 'path'
+import fs from 'fs'
 
 // Configure marked for clean, semantic HTML output
 marked.setOptions({
@@ -82,6 +84,50 @@ try {
   // Footnotes will still work but without special formatting
 }
 
+const OWN_PROPERTY_HOSTS = new Set([
+  'plantdoctor.app',
+  'blog.plantdoctor.app',
+  'moruk.ai',
+  'moruk.link',
+  'moruk.app',
+  'moruk.dev',
+  'apps.apple.com',
+  'itunes.apple.com',
+  'play.google.com',
+  ...loadProductionDomains(),
+])
+
+function loadProductionDomains(): string[] {
+  try {
+    const mappingPath = path.resolve(process.cwd(), '../../APPS_MAPPING.md')
+    const raw = fs.readFileSync(mappingPath, 'utf8')
+    const matches = raw.match(/→\s*https?:\/\/([^\s\n/]+)/g) ?? []
+    return matches.map((m) => m.replace(/→\s*https?:\/\//, '').trim())
+  } catch {
+    return []
+  }
+}
+
+function isOwnProperty(href: string): boolean {
+  try {
+    const { hostname } = new URL(href)
+    return [...OWN_PROPERTY_HOSTS].some((h) => hostname === h || hostname.endsWith(`.${h}`))
+  } catch {
+    return false
+  }
+}
+
+export function applyLinkRelAttributes(html: string): string {
+  return html.replace(
+    /<a\s([^>]*href="(https?:\/\/[^"]+)"[^>]*)>/gi,
+    (_match, attrs: string, href: string) => {
+      if (/\brel=/i.test(attrs)) return `<a ${attrs}>`
+      const rel = isOwnProperty(href) ? 'noopener noreferrer' : 'nofollow noopener noreferrer'
+      return `<a ${attrs} rel="${rel}" target="_blank">`
+    },
+  )
+}
+
 export interface PostFrontmatter {
   title: string
   description?: string
@@ -126,11 +172,8 @@ export function processMDX(source: string, slug: string): ProcessedPost {
   // Remove the first-level heading (H1) from the HTML to prevent duplicate page titles
   html = html.replace(/<h1[\s\S]*?<\/h1>/, '')
 
-  // Add security attributes to external links in footnotes and citations
-  html = html.replace(
-    /<a href="(https?:\/\/(?!blog.plantdoctor.app\.ai)[^"]+)"([^>]*)>/g,
-    '<a href="$1" rel="nofollow noopener noreferrer" target="_blank"$2>',
-  )
+  // Apply rel/target attributes — own properties skip nofollow to preserve PageRank
+  html = applyLinkRelAttributes(html)
 
   // Generate SEO-friendly excerpt (first 160 chars for meta description)
   const plainText = content
