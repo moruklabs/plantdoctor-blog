@@ -239,10 +239,7 @@ export function generateArticleMetadata(post: { metadata: PostMetadata }, slug: 
       : blogConfig.seo.keywords
   // twitterHandle may be stored as a full URL in some configs — extract handle or omit
   const rawHandle = blogConfig.seo.twitterHandle
-  const twitterCreator =
-    rawHandle && !rawHandle.startsWith('http')
-      ? `@${rawHandle}`
-      : undefined
+  const twitterCreator = rawHandle && !rawHandle.startsWith('http') ? `@${rawHandle}` : undefined
 
   return {
     title: fullTitle,
