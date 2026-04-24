@@ -16,7 +16,42 @@ export const metadata: Metadata = {
   keywords: blogConfig.seo.keywords,
   authors: [{ name: blogConfig.author.name }],
   generator: 'Next.js',
-  robots: 'index, follow',
+  robots: { index: true, follow: true },
+  alternates: { canonical: blogConfig.site.url },
+  openGraph: {
+    type: 'website',
+    url: blogConfig.site.url,
+    siteName: blogConfig.site.name,
+    title: `${blogConfig.site.name} | ${blogConfig.site.tagline}`,
+    description: blogConfig.site.description,
+    images: [
+      {
+        url: '/images/og-default.jpg',
+        width: 1200,
+        height: 630,
+        alt: blogConfig.site.name,
+      },
+    ],
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${blogConfig.site.name} | ${blogConfig.site.tagline}`,
+    description: blogConfig.site.description,
+    images: ['/images/og-default.jpg'],
+    site: blogConfig.seo.twitterHandle,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
+      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.svg',
+    apple: [{ url: '/icon-180x180.png', sizes: '180x180', type: 'image/png' }],
+  },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
